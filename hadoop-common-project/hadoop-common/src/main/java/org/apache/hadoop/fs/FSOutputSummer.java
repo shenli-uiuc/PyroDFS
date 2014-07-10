@@ -121,6 +121,8 @@ abstract public class FSOutputSummer extends OutputStream {
    * seal the current block
    */
   private void seal() throws IOException {
+    // flushBuffer();
+    // seal block
   }
 
 

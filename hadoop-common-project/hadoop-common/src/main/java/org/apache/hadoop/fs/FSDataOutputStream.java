@@ -148,4 +148,10 @@ public class FSDataOutputStream extends DataOutputStream
           "not support setting the drop-behind caching setting.");
     }
   }
+
+  /**
+   * Shen Li: seal the current block if it is HDFS
+   */
+  public void seal() {
+  }
 }

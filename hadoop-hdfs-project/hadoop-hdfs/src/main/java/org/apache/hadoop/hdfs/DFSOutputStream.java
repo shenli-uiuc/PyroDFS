@@ -1704,6 +1704,9 @@ public class DFSOutputStream extends FSOutputSummer
     }
   }
 
+  // Shen Li: a chunk is not a block, it can be any size, usually the buffer size
+  // used by FsOutputSummer. bytesCurBlock is the offset in the current HDFS block
+  // which accounts only data size, not checksum and header size?
   // @see FSOutputSummer#writeChunk()
   @Override
   protected synchronized void writeChunk(byte[] b, int offset, int len, byte[] checksum) 
@@ -1743,7 +1746,11 @@ public class DFSOutputStream extends FSOutputSummer
     bytesCurBlock += len;
 
     // If packet is full, enqueue it for transmission
+    // Shen Li: maxChunks is computed as max(psize/csize, 1),
+    // so, if some chunks are not full, maxChunks threshold will
+    // be reached first. 
     //
+    // ? why bytesCurBlock == blockSize? what if it is >
     if (currentPacket.numChunks == currentPacket.maxChunks ||
         bytesCurBlock == blockSize) {
       if (DFSClient.LOG.isDebugEnabled()) {
