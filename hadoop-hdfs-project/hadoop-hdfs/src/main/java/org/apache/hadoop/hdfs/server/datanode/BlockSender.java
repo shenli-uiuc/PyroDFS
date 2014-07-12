@@ -541,6 +541,7 @@ class BlockSender implements java.io.Closeable {
         sockOut.write(buf, headerOff, dataOff - headerOff);
         
         // no need to flush since we know out is not a buffered stream
+        // Shen Li: blockIn is where the block is read from
         FileChannel fileCh = ((FileInputStream)blockIn).getChannel();
         LongWritable waitTime = new LongWritable();
         LongWritable transferTime = new LongWritable();
@@ -725,6 +726,7 @@ class BlockSender implements java.io.Closeable {
           // send an empty packet to mark the end of the block
           sendPacket(pktBuf, maxChunksPerPacket, streamForSendChunks, transferTo,
               throttler);
+          // Shen Li: mark isSealed here?
           out.flush();
         } catch (IOException e) { //socket error
           throw ioeToSocketException(e);

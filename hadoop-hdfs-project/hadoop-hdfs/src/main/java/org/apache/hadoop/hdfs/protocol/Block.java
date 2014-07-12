@@ -86,6 +86,8 @@ public class Block implements Writable, Comparable<Block> {
   private long numBytes;
   private long generationStamp;
 
+  // Shen Li: add isSealed?
+
   public Block() {this(0, 0, 0);}
 
   public Block(final long blkid, final long len, final long generationStamp) {

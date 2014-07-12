@@ -157,6 +157,7 @@ public class DFSOutputStream extends FSOutputSummer
   private class Packet {
     final long seqno;           // sequencenumber of buffer in block
     final long offsetInBlock;   // offset in block
+    private boolean sealBlock;  // Shen Li;
     private boolean lastPacketInBlock;   // is this the last packet in block?
     boolean syncBlock;          // this packet forces the current block to disk
     int numChunks;              // number of chunks currently in packet
@@ -190,6 +191,8 @@ public class DFSOutputStream extends FSOutputSummer
      */
     Packet() {
       this.lastPacketInBlock = false;
+      //Shen Li:
+      this.sealBlock = false;
       this.numChunks = 0;
       this.offsetInBlock = 0;
       this.seqno = HEART_BEAT_SEQNO;
@@ -209,6 +212,9 @@ public class DFSOutputStream extends FSOutputSummer
      */
     Packet(int pktSize, int chunksPerPkt, long offsetInBlock) {
       this.lastPacketInBlock = false;
+      //Shen Li:
+      this.sealBlock = false;
+
       this.numChunks = 0;
       this.offsetInBlock = offsetInBlock;
       this.seqno = currentSeqno;
@@ -248,7 +254,8 @@ public class DFSOutputStream extends FSOutputSummer
       final int pktLen = HdfsConstants.BYTES_IN_INTEGER + dataLen + checksumLen;
 
       PacketHeader header = new PacketHeader(
-        pktLen, offsetInBlock, seqno, lastPacketInBlock, dataLen, syncBlock);
+        pktLen, offsetInBlock, seqno, lastPacketInBlock, 
+        dataLen, syncBlock, sealBlock);
       
       if (checksumPos != dataStart) {
         // Move the checksum to cover the gap. This can happen for the last
@@ -302,6 +309,7 @@ public class DFSOutputStream extends FSOutputSummer
       return "packet seqno:" + this.seqno +
       " offsetInBlock:" + this.offsetInBlock + 
       " lastPacketInBlock:" + this.lastPacketInBlock +
+      " sealBlock:" + this.sealBlock + 
       " lastByteOffsetInBlock: " + this.getLastByteOffsetBlock();
     }
   }
@@ -1711,6 +1719,12 @@ public class DFSOutputStream extends FSOutputSummer
   @Override
   protected synchronized void writeChunk(byte[] b, int offset, int len, byte[] checksum) 
                                                         throws IOException {
+    writeChunk(b, offset, len, checksum, false);
+  }
+
+  @Override
+  protected synchronized void writeChunk(byte[] b, int offset, int len, 
+      byte[] checksum, boolean sealBlock) throws IOException {
     dfsClient.checkOpen();
     checkClosed();
 
@@ -1740,10 +1754,17 @@ public class DFSOutputStream extends FSOutputSummer
       }
     }
 
-    currentPacket.writeChecksum(checksum, 0, cklen);
-    currentPacket.writeData(b, offset, len);
-    currentPacket.numChunks++;
-    bytesCurBlock += len;
+    if (len > 0) {
+      // Shen Li: it is possible that len == 0 with sealBlock set to true
+      currentPacket.writeChecksum(checksum, 0, cklen);
+      currentPacket.writeData(b, offset, len);
+      currentPacket.numChunks++;
+      bytesCurBlock += len;
+    } else {
+      if (!sealBlock) {
+        throw new IOException("Shen Li: a non-seal chunk with 0 length");
+      }
+    }
 
     // If packet is full, enqueue it for transmission
     // Shen Li: maxChunks is computed as max(psize/csize, 1),
@@ -1751,8 +1772,11 @@ public class DFSOutputStream extends FSOutputSummer
     // be reached first. 
     //
     // ? why bytesCurBlock == blockSize? what if it is >
+    // because blockSize is guaranteed to be a multiple of 
+    // chunk size, except the last chunk in the block. 
+    //
     if (currentPacket.numChunks == currentPacket.maxChunks ||
-        bytesCurBlock == blockSize) {
+        bytesCurBlock == blockSize || sealBlock) {
       if (DFSClient.LOG.isDebugEnabled()) {
         DFSClient.LOG.debug("DFSClient writeChunk packet full seqno=" +
             currentPacket.seqno +
@@ -1761,27 +1785,36 @@ public class DFSOutputStream extends FSOutputSummer
             ", blockSize=" + blockSize +
             ", appendChunk=" + appendChunk);
       }
-      waitAndQueueCurrentPacket();
 
-      // If the reopened file did not end at chunk boundary and the above
-      // write filled up its partial chunk. Tell the summer to generate full 
-      // crc chunks from now on.
-      if (appendChunk && bytesCurBlock%bytesPerChecksum == 0) {
-        appendChunk = false;
-        resetChecksumChunk(bytesPerChecksum);
-      }
+      //Shen Li: avoid sending empty packet because of sealBlock
+      if (bytesCurBlock > 0) {
+        waitAndQueueCurrentPacket();
 
-      if (!appendChunk) {
-        int psize = Math.min((int)(blockSize-bytesCurBlock), dfsClient.getConf().writePacketSize);
-        computePacketChunkSize(psize, bytesPerChecksum);
+        // If the reopened file did not end at chunk boundary and the above
+        // write filled up its partial chunk. Tell the summer to generate full 
+        // crc chunks from now on.
+        if (appendChunk && bytesCurBlock%bytesPerChecksum == 0) {
+          appendChunk = false;
+          resetChecksumChunk(bytesPerChecksum);
+        }
+
+        if (!appendChunk) {
+          int psize = Math.min((int)(blockSize-bytesCurBlock), dfsClient.getConf().writePacketSize);
+          computePacketChunkSize(psize, bytesPerChecksum);
+        }
       }
       //
       // if encountering a block boundary, send an empty packet to 
       // indicate the end of block and reset bytesCurBlock.
-      //
-      if (bytesCurBlock == blockSize) {
+      // 
+      if (bytesCurBlock == blockSize || (sealBlock  && bytesCurBlock > 0)) {
         currentPacket = new Packet(0, 0, bytesCurBlock);
         currentPacket.lastPacketInBlock = true;
+        if (sealBlock) {
+          DFSClient.LOG.info("Shen Li: sealing current block, " 
+              + "bytesCurBlock = " + bytesCurBlock + ", len = " + len);
+        }
+        currentPacket.sealBlock = sealBlock;
         currentPacket.syncBlock = shouldSyncBlock;
         waitAndQueueCurrentPacket();
         bytesCurBlock = 0;

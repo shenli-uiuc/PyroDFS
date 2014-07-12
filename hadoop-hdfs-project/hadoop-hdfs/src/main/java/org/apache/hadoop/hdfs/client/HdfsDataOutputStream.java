@@ -77,4 +77,11 @@ public class HdfsDataOutputStream extends FSDataOutputStream {
      */
     UPDATE_LENGTH;
   }
+
+  // Shen Li
+  @Override
+  public void sealCurBlock() {
+    DFSOutputStream out = (DFSOutputStream)getWrappedStream();
+    out.sealCurBlock();
+  }
 }

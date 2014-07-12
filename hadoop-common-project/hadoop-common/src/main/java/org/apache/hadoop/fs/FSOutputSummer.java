@@ -53,7 +53,15 @@ abstract public class FSOutputSummer extends OutputStream {
    */
   protected abstract void writeChunk(byte[] b, int offset, int len, byte[] checksum)
   throws IOException;
-  
+
+
+  /**
+   * should only be called by DFSOutputStream
+   */
+  protected void writeChunk(byte[] b, int offset, int len, 
+      byte[] checksum, boolean seal) throws IOException {
+  }
+
   /**
    * Check if the implementing OutputStream is closed and should no longer
    * accept writes. Implementations should do nothing if this stream is not
@@ -106,23 +114,10 @@ abstract public class FSOutputSummer extends OutputStream {
   }
  
   /**
-   * Shen Li: 
-   * allow caller to specify whether the DFS needs to seal the current block
-   * after write
-   */
-  public synchronized void write(byte b[], int off, int len, boolean isSeal)
-      throws IOException {
-    write(b, off, len);
-    if (isSeal)
-      seal();
-  }
-
-  /**
    * seal the current block
    */
-  private void seal() throws IOException {
-    // flushBuffer();
-    // seal block
+  public synchronized void sealCurBlock() throws IOException {
+    flushBuffer(false, true);
   }
 
 
@@ -165,10 +160,18 @@ abstract public class FSOutputSummer extends OutputStream {
    * this object remains intact.
    */
   protected synchronized void flushBuffer(boolean keep) throws IOException {
-    if (count != 0) {
+    flushBuffer(keep, false);
+  }
+
+  /**
+   * Shen Li
+   */
+  protected synchronized void flushBuffer(boolean keep, 
+      boolean seal) throws IOException {
+    if (count != 0 || seal) {
       int chunkLen = count;
       count = 0;
-      writeChecksumChunk(buf, 0, chunkLen, keep);
+      writeChecksumChunk(buf, 0, chunkLen, keep, seal);
       if (keep) {
         count = chunkLen;
       }
@@ -188,12 +191,20 @@ abstract public class FSOutputSummer extends OutputStream {
    */
   private void writeChecksumChunk(byte b[], int off, int len, boolean keep)
   throws IOException {
+    writeChecksumChunk(b, off, len, keep, false);
+  }
+
+  /**
+   * Shen Li:
+   */
+  private void writeChecksumChunk(byte b[], int off, int len, 
+      boolean keep, boolean seal) throws IOException {
     int tempChecksum = (int)sum.getValue();
     if (!keep) {
       sum.reset();
     }
     int2byte(tempChecksum, checksum);
-    writeChunk(b, off, len, checksum);
+    writeChunk(b, off, len, checksum, seal);
   }
 
   /**

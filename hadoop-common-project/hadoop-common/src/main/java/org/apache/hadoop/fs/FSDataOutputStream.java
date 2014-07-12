@@ -152,6 +152,10 @@ public class FSDataOutputStream extends DataOutputStream
   /**
    * Shen Li: seal the current block if it is HDFS
    */
-  public void seal() {
+  public void sealCurBlock() {
+    // performs nothing, but will be overwritten by HdfsDataOutputStream
+    // to seal a Hdfs block
+    throw new IllegalStateException("Shen Li: method sealCurBlock() "
+        + "should only be called on a HdfsDataOutputStream instance");
   }
 }

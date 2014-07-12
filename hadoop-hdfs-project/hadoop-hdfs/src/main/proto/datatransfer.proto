@@ -188,6 +188,7 @@ message PacketHeaderProto {
   required bool lastPacketInBlock = 3;
   required sfixed32 dataLen = 4;
   optional bool syncBlock = 5 [default = false];
+  optional bool sealBlock = 6 [default = false];
 }
 
 enum Status {

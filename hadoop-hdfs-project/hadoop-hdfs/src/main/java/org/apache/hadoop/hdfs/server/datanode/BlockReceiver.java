@@ -470,6 +470,9 @@ class BlockReceiver implements Closeable {
     int len = header.getDataLen();
     boolean syncBlock = header.getSyncBlock();
 
+    // Shen Li: add isSealed
+    boolean sealBlock = header.getSealBlock();
+
     // avoid double sync'ing on close
     if (syncBlock && lastPacketInBlock) {
       this.syncOnClose = false;
@@ -634,6 +637,8 @@ class BlockReceiver implements Closeable {
       throttler.throttle(len);
     }
     
+    //Shen Li seal: TODO
+    //if (sealBlock)
     return lastPacketInBlock?-1:len;
   }
 
@@ -716,6 +721,7 @@ class BlockReceiver implements Closeable {
         // close the block/crc files
         close();
         block.setNumBytes(replicaInfo.getNumBytes());
+        // Shen Li: set isSealed
 
         if (stage == BlockConstructionStage.TRANSFER_RBW) {
           // for TRANSFER_RBW, convert temporary to RBW

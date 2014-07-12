@@ -47,6 +47,8 @@ import com.google.protobuf.InvalidProtocolBufferException;
  * When serialized, this header is written out as a protocol buffer, preceded
  * by a 4-byte integer representing the full packet length, and a 2-byte short
  * representing the header length.
+ *
+ * Shen Li: added the sealBlock field
  */
 @InterfaceAudience.Private
 @InterfaceStability.Evolving
@@ -58,6 +60,7 @@ public class PacketHeader {
       .setLastPacketInBlock(false)
       .setDataLen(0)
       .setSyncBlock(false)
+      .setSealBlock(false)
       .build().getSerializedSize();
   public static final int PKT_LENGTHS_LEN =
       Ints.BYTES + Shorts.BYTES;
@@ -70,8 +73,16 @@ public class PacketHeader {
   public PacketHeader() {
   }
 
+  // Shen Li: redirect it to the one considers sealBlock
   public PacketHeader(int packetLen, long offsetInBlock, long seqno,
-                      boolean lastPacketInBlock, int dataLen, boolean syncBlock) {
+                      boolean lastPacketInBlock, int dataLen, boolean syncBlock){
+    this(packetLen, offsetInBlock, seqno, lastPacketInBlock, 
+         dataLen, syncBlock, false); 
+  } 
+  
+  public PacketHeader(int packetLen, long offsetInBlock, long seqno,
+                      boolean lastPacketInBlock, int dataLen, 
+                      boolean syncBlock, boolean sealBlock) {
     this.packetLen = packetLen;
     Preconditions.checkArgument(packetLen >= Ints.BYTES,
         "packet len %s should always be at least 4 bytes",
@@ -89,6 +100,12 @@ public class PacketHeader {
       // because it changes the length of the packet header, and BlockReceiver
       // in that version did not support variable-length headers.
       builder.setSyncBlock(syncBlock);
+    }
+
+    if (sealBlock) {
+      // Shen Li: same as syncBlock, set only when it is specified
+      // for sake of compatibility
+      builder.setSealBlock(sealBlock);
     }
       
     proto = builder.build();
@@ -116,6 +133,10 @@ public class PacketHeader {
 
   public boolean getSyncBlock() {
     return proto.getSyncBlock();
+  }
+
+  public boolean getSealBlock() {
+    return proto.getSealBlock();
   }
 
   @Override
@@ -191,6 +212,8 @@ public class PacketHeader {
    * sequence number to be larger by 1.
    */
   public boolean sanityCheck(long lastSeqNo) {
+    // Shen Li: A seal block packet must be the last packet in block
+    if (proto.getSealBlock() && !proto.getLastPacketInBlock()) return false;
     // We should only have a non-positive data length for the last packet
     if (proto.getDataLen() <= 0 && !proto.getLastPacketInBlock()) return false;
     // The last packet should not contain data

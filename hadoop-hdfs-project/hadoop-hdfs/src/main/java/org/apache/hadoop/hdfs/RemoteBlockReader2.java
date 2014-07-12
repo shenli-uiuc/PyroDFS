@@ -214,8 +214,12 @@ public class RemoteBlockReader2  implements BlockReader {
       curDataSlice.position(newPos);
     }
 
+    // Shen Li: TODO
     // If we've now satisfied the whole client read, read one last packet
     // header, which should be empty
+    LOG.info("Shen Li: before readTrailingEmptyPacket() isLastPacket" 
+             + curHeader.isLastPacketInBlock() 
+             + ", bytesNeededToFInish " + bytesNeededToFinish);
     if (bytesNeededToFinish <= 0) {
       readTrailingEmptyPacket();
       if (verifyChecksum) {
