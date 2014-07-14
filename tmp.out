@@ -1,0 +1,33 @@
+hadoop-hdfs-project/hadoop-hdfs/src/test/java/org/apache/hadoop/hdfs/DFSTestUtil.java:    final DatanodeStorage storage = new DatanodeStorage(storageID);
+hadoop-hdfs-project/hadoop-hdfs/src/test/java/org/apache/hadoop/hdfs/server/blockmanagement/TestHeartbeatHandling.java:      dd.updateStorage(new DatanodeStorage(storageID));
+hadoop-hdfs-project/hadoop-hdfs/src/test/java/org/apache/hadoop/hdfs/server/blockmanagement/TestHeartbeatHandling.java:      dd1.updateStorage(new DatanodeStorage(DatanodeStorage.generateUuid()));
+hadoop-hdfs-project/hadoop-hdfs/src/test/java/org/apache/hadoop/hdfs/server/blockmanagement/TestHeartbeatHandling.java:      dd2.updateStorage(new DatanodeStorage(DatanodeStorage.generateUuid()));
+hadoop-hdfs-project/hadoop-hdfs/src/test/java/org/apache/hadoop/hdfs/server/blockmanagement/TestHeartbeatHandling.java:      dd3.updateStorage(new DatanodeStorage(DatanodeStorage.generateUuid()));
+hadoop-hdfs-project/hadoop-hdfs/src/test/java/org/apache/hadoop/hdfs/server/blockmanagement/BlockManagerTestUtil.java:      dn.updateStorage(new DatanodeStorage(DatanodeStorage.generateUuid()));
+hadoop-hdfs-project/hadoop-hdfs/src/test/java/org/apache/hadoop/hdfs/server/blockmanagement/BlockManagerTestUtil.java:        initializeStorage? new DatanodeStorage(DatanodeStorage.generateUuid()): null);
+hadoop-hdfs-project/hadoop-hdfs/src/test/java/org/apache/hadoop/hdfs/server/blockmanagement/BlockManagerTestUtil.java:      DatanodeStorage dns = new DatanodeStorage(
+hadoop-hdfs-project/hadoop-hdfs/src/test/java/org/apache/hadoop/hdfs/server/blockmanagement/TestBlockManager.java:    rackCNode.updateStorage(new DatanodeStorage(DatanodeStorage.generateUuid()));
+hadoop-hdfs-project/hadoop-hdfs/src/test/java/org/apache/hadoop/hdfs/server/blockmanagement/TestBlockManager.java:    bm.processReport(node, new DatanodeStorage(ds.getStorageID()), "pool", 
+hadoop-hdfs-project/hadoop-hdfs/src/test/java/org/apache/hadoop/hdfs/server/blockmanagement/TestBlockManager.java:    bm.processReport(node, new DatanodeStorage(ds.getStorageID()), "pool",
+hadoop-hdfs-project/hadoop-hdfs/src/test/java/org/apache/hadoop/hdfs/server/blockmanagement/TestBlockManager.java:    bm.processReport(node, new DatanodeStorage(ds.getStorageID()), "pool",
+hadoop-hdfs-project/hadoop-hdfs/src/test/java/org/apache/hadoop/hdfs/server/blockmanagement/TestBlockManager.java:    bm.processReport(node, new DatanodeStorage(ds.getStorageID()), "pool",
+hadoop-hdfs-project/hadoop-hdfs/src/test/java/org/apache/hadoop/hdfs/server/common/TestJspHelper.java:    BlockManagerTestUtil.updateStorage(dnDesc1, new DatanodeStorage("dnStorage1"));
+hadoop-hdfs-project/hadoop-hdfs/src/test/java/org/apache/hadoop/hdfs/server/common/TestJspHelper.java:    BlockManagerTestUtil.updateStorage(dnDesc2, new DatanodeStorage("dnStorage2"));
+hadoop-hdfs-project/hadoop-hdfs/src/test/java/org/apache/hadoop/hdfs/server/common/TestJspHelper.java:    DatanodeStorage dns1 = new DatanodeStorage("dnStorage1");
+hadoop-hdfs-project/hadoop-hdfs/src/test/java/org/apache/hadoop/hdfs/server/common/TestJspHelper.java:    DatanodeStorage dns2 = new DatanodeStorage("dnStorage2");
+hadoop-hdfs-project/hadoop-hdfs/src/test/java/org/apache/hadoop/hdfs/server/namenode/TestDeadDatanode.java:        new DatanodeStorage(reg.getDatanodeUuid()),
+hadoop-hdfs-project/hadoop-hdfs/src/test/java/org/apache/hadoop/hdfs/server/namenode/TestDeadDatanode.java:        new DatanodeStorage(reg.getDatanodeUuid()),
+hadoop-hdfs-project/hadoop-hdfs/src/test/java/org/apache/hadoop/hdfs/server/namenode/NNThroughputBenchmark.java:      storage = new DatanodeStorage(DatanodeStorage.generateUuid());
+hadoop-hdfs-project/hadoop-hdfs/src/test/java/org/apache/hadoop/hdfs/server/datanode/SimulatedFSDataset.java:      dnStorage = new DatanodeStorage(
+hadoop-hdfs-project/hadoop-hdfs/src/test/java/org/apache/hadoop/hdfs/server/datanode/TestBlockHasMultipleReplicasOnSameDN.java:      DatanodeStorage dns = new DatanodeStorage(v.getStorageID());
+hadoop-hdfs-project/hadoop-hdfs/src/test/java/org/apache/hadoop/hdfs/server/datanode/TestIncrementalBrVariations.java:    final DatanodeStorage newStorage = new DatanodeStorage(newStorageUuid);
+hadoop-hdfs-project/hadoop-hdfs/src/test/java/org/apache/hadoop/hdfs/protocolPB/TestPBHelper.java:    DatanodeStorage dns1 = new DatanodeStorage(
+hadoop-hdfs-project/hadoop-hdfs/src/main/java/org/apache/hadoop/hdfs/server/datanode/fsdataset/impl/FsDatasetImpl.java:          new DatanodeStorage(sd.getStorageUuid(), DatanodeStorage.State.NORMAL, storageType));
+hadoop-hdfs-project/hadoop-hdfs/src/main/java/org/apache/hadoop/hdfs/server/datanode/fsdataset/impl/FsVolumeImpl.java:    return new DatanodeStorage(storageID, DatanodeStorage.State.NORMAL, storageType);
+hadoop-hdfs-project/hadoop-hdfs/src/main/java/org/apache/hadoop/hdfs/server/protocol/StorageReceivedDeletedBlocks.java:    this.storage = new DatanodeStorage(storageID);
+hadoop-hdfs-project/hadoop-hdfs/src/main/java/org/apache/hadoop/hdfs/protocolPB/PBHelper.java:    return new DatanodeStorage(s.getStorageUuid(),
+hadoop-hdfs-project/hadoop-hdfs/src/main/java/org/apache/hadoop/hdfs/protocolPB/PBHelper.java:            new DatanodeStorage(p.getStorageUuid()),
+hadoop-hdfs-project/hadoop-hdfs/target/src-html/org/apache/hadoop/hdfs/server/protocol/StorageReceivedDeletedBlocks.html:<span class="sourceLineNo">045</span>    this.storage = new DatanodeStorage(storageID);<a name="line.45"></a>
+hadoop-hdfs-project/hadoop-hdfs/target/src-html/org/apache/hadoop/hdfs/protocolPB/PBHelper.html:<span class="sourceLineNo">1612</span>    return new DatanodeStorage(s.getStorageUuid(),<a name="line.1612"></a>
+hadoop-hdfs-project/hadoop-hdfs/target/src-html/org/apache/hadoop/hdfs/protocolPB/PBHelper.html:<span class="sourceLineNo">1661</span>            new DatanodeStorage(p.getStorageUuid()),<a name="line.1661"></a>
+grep: input file ‘tmp.out’ is also the output

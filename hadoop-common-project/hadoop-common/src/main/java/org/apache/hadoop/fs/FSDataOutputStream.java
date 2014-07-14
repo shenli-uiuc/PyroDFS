@@ -152,10 +152,20 @@ public class FSDataOutputStream extends DataOutputStream
   /**
    * Shen Li: seal the current block if it is HDFS
    */
-  public void sealCurBlock() {
+  public void sealCurBlock() throws IOException {
     // performs nothing, but will be overwritten by HdfsDataOutputStream
     // to seal a Hdfs block
     throw new IllegalStateException("Shen Li: method sealCurBlock() "
         + "should only be called on a HdfsDataOutputStream instance");
+  }
+
+  /**
+   * Shen Li: set the replicaGroups for the next block to be written
+   */
+  public void setReplicaGroups(String[] replicaGroups) {
+    // functionality is implemented in HdfsDataOutputStream.
+    throw new IllegalStateException("Shen Li: method "
+        + "setReplicaGroups should only be called on a "
+        + "HdfsDataOutputStream instance");
   }
 }

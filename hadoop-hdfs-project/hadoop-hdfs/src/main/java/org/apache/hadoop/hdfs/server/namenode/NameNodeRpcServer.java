@@ -568,6 +568,16 @@ class NameNodeRpcServer implements NamenodeProtocols {
       ExtendedBlock previous, DatanodeInfo[] excludedNodes, long fileId,
       String[] favoredNodes)
       throws IOException {
+    return addBlock(src, clientName, previous, excludedNodes, fileId,
+                    favoredNodes, null);
+  }
+
+  // Shen Li: add parameter replicaGroups. 
+  // TODO add this method to protocol
+  @Override
+  public LocatedBlock addBlock(String src, String clientName, 
+      ExtendedBlock previous, DatanodeInfo[] excludedNodes, long fileId,
+      String[] favoredNodes, String[] replicaGroups) throws IOException {
     if (stateChangeLog.isDebugEnabled()) {
       stateChangeLog.debug("*BLOCK* NameNode.addBlock: file " + src
           + " fileId=" + fileId + " for " + clientName);

@@ -100,6 +100,20 @@ public abstract class BlockPlacementPolicy {
   }
 
   /**
+   * Shen Li: add parameter replicaGroup. The functionality are expected
+   * to be provided by the implementations of this class.
+   */
+  DatanodeStorageInfo[] chooseTarget(String src,
+      int numOfReplicas, Node writer,
+      Set<Node> excludedNodes,
+      long blocksize,
+      List<DatanodeDescriptor> favoredNodes,
+      StorageType storageType, List<String> replicaGroups) {
+    return chooseTarget(src, numOfReplicas, writer, excludedNodes,
+                 blocksize, favoredNodes, storageType);
+  }
+
+  /**
    * Verify if the block's placement meets requirement of placement policy,
    * i.e. replicas are placed on no less than minRacks racks in the system.
    * 

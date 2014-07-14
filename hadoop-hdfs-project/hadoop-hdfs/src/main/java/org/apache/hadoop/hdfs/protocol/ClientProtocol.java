@@ -340,6 +340,18 @@ public interface ClientProtocol {
       NotReplicatedYetException, SafeModeException, UnresolvedLinkException,
       IOException;
 
+  /**
+   * Shen Li: add parameter replicaGroups
+   */
+  @Idempotent
+  public LocatedBlock addBlock(String src, String clientName,
+      ExtendedBlock previous, DatanodeInfo[] excludeNodes, long fileId,
+      String[] favoredNodes, String[] replicaGroups) 
+      throws AccessControlException, FileNotFoundException,
+             NotReplicatedYetException, SafeModeException,
+             UnresolvedLinkException, IOException;
+
+
   /** 
    * Get a datanode for an existing pipeline.
    * 

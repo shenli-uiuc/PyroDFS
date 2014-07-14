@@ -2643,9 +2643,6 @@ public class FSNamesystem implements Namesystem, FSClusterStats,
     blockManager.setBlockPoolId(blockPoolId);
   }
 
-  // Shen Li: TODO add a new getAdditionalBlock() that accounts
-  // replication group
-
   /**
    * The client would like to obtain an additional block for the indicated
    * filename (which is being written-to).  Return an array that consists
@@ -2663,6 +2660,19 @@ public class FSNamesystem implements Namesystem, FSClusterStats,
       throws LeaseExpiredException, NotReplicatedYetException,
       QuotaExceededException, SafeModeException, UnresolvedLinkException,
       IOException {
+    return getAdditionalBlock(src, fileId, clientName, previous, 
+                              excludedNodes, favoredNodes, null);
+  }
+
+  /**
+   * Shen Li: add parameter replicaGroups
+   */
+  LocatedBlock getAdditionalBlock(String src, long fileId, String clientName,
+      ExtendedBlock previous, Set<Node> excludedNodes,
+      List<String> favoredNodes, List<String> replicaGroups) 
+      throws LeaseExpiredException, NotReplicatedYetException,
+             QuotaExceededException, SafeModeException, 
+             UnresolvedLinkException, IOException {
     long blockSize;
     int replication;
     DatanodeDescriptor clientNode = null;
@@ -2703,7 +2713,8 @@ public class FSNamesystem implements Namesystem, FSClusterStats,
 
     // choose targets for the new block to be allocated.
     final DatanodeStorageInfo targets[] = getBlockManager().chooseTarget( 
-        src, replication, clientNode, excludedNodes, blockSize, favoredNodes);
+        src, replication, clientNode, excludedNodes, blockSize, 
+        favoredNodes, replicaGroups);
 
     // Part II.
     // Allocate a new block, add it to the INode and the BlocksMap. 

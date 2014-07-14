@@ -348,6 +348,20 @@ public class ClientNamenodeProtocolTranslatorPB implements
       throws AccessControlException, FileNotFoundException,
       NotReplicatedYetException, SafeModeException, UnresolvedLinkException,
       IOException {
+    return addBlock(src, clientName, previous, excludeNodes, fileId,
+                    favoredNodes, null);
+  }
+
+  /**
+   * Shen Li: add parameter replicaGroups
+   */
+  @Override
+  public LocatedBlock addBlock(String src, String clientName, 
+      ExtendedBlock previous, DatanodeInfo[] excludeNodes, long fileId,
+      String[] favoredNodes, String[] replicaGroups)
+      throws AccessControlException, FileNotFoundException,
+             NotReplicatedYetException, SafeModeException, 
+             UnresolvedLinkException, IOException {
     AddBlockRequestProto.Builder req = AddBlockRequestProto.newBuilder()
         .setSrc(src).setClientName(clientName).setFileId(fileId);
     if (previous != null) 
@@ -356,6 +370,10 @@ public class ClientNamenodeProtocolTranslatorPB implements
       req.addAllExcludeNodes(PBHelper.convert(excludeNodes));
     if (favoredNodes != null) {
       req.addAllFavoredNodes(Arrays.asList(favoredNodes));
+    }
+    // Shen Li
+    if (replicaGroups != null) {
+      req.addAllReplicaGroups(Arrays.asList(replicaGroups));
     }
     try {
       return PBHelper.convert(rpcProxy.addBlock(null, req.build()).getBlock());

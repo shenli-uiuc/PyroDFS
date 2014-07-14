@@ -129,6 +129,7 @@ message AddBlockRequestProto {
   repeated DatanodeInfoProto excludeNodes = 4;
   optional uint64 fileId = 5 [default = 0];  // default as a bogus id
   repeated string favoredNodes = 6; //the set of datanodes to use for the block
+  repeated string replicaGroups = 7; // Shen Li: replication groups
 }
 
 message AddBlockResponseProto {

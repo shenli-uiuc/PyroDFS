@@ -70,7 +70,7 @@ public class BlockPlacementPolicyDefault extends BlockPlacementPolicy {
   protected boolean considerLoad; 
   private boolean preferLocalNode = true;
   protected NetworkTopology clusterMap;
-  private FSClusterStats stats;
+  protected FSClusterStats stats;
   protected long heartbeatInterval;   // interval for DataNode heartbeats
   private long staleInterval;   // interval used to identify stale DataNodes
   
@@ -220,7 +220,7 @@ public class BlockPlacementPolicyDefault extends BlockPlacementPolicy {
                        results.toArray(new DatanodeStorageInfo[results.size()]));
   }
 
-  private int[] getMaxNodesPerRack(int numOfChosen, int numOfReplicas) {
+  protected int[] getMaxNodesPerRack(int numOfChosen, int numOfReplicas) {
     int clusterSize = clusterMap.getNumOfLeaves();
     int totalNumOfReplicas = numOfChosen + numOfReplicas;
     if (totalNumOfReplicas > clusterSize) {
@@ -667,7 +667,7 @@ public class BlockPlacementPolicyDefault extends BlockPlacementPolicy {
    * starts from the writer and traverses all <i>nodes</i>
    * This is basically a traveling salesman problem.
    */
-  private DatanodeStorageInfo[] getPipeline(Node writer,
+  protected DatanodeStorageInfo[] getPipeline(Node writer,
       DatanodeStorageInfo[] storages) {
     if (storages.length == 0) {
       return storages;

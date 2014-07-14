@@ -351,6 +351,11 @@ public class DFSOutputStream extends FSOutputSummer
           }
         });
     private String[] favoredNodes;
+
+    // Shen Li: replicaGroups, passed to namenode.addBlock() in
+    // DataStreamer.locateFollowingBlock().
+    private String[] replicaGroups;
+
     volatile boolean hasError = false;
     volatile int errorIndex = -1;
     volatile int restartingNodeIndex = -1; // Restarting node index
@@ -443,6 +448,10 @@ public class DFSOutputStream extends FSOutputSummer
 
     private void setFavoredNodes(String[] favoredNodes) {
       this.favoredNodes = favoredNodes;
+    }
+
+    private void setReplicaGroups(String[] replicaGroups) {
+      this.replicaGroups = replicaGroups;
     }
 
     /**
@@ -1436,6 +1445,10 @@ public class DFSOutputStream extends FSOutputSummer
       }
     }
 
+    /**
+     * Shen Li: added parameter replicaGroups to 
+     * the addBlock() method call.
+     */
     private LocatedBlock locateFollowingBlock(long start,
         DatanodeInfo[] excludedNodes)  throws IOException {
       int retries = dfsClient.getConf().nBlockWriteLocateFollowingRetry;
@@ -1445,7 +1458,7 @@ public class DFSOutputStream extends FSOutputSummer
         while (true) {
           try {
             return dfsClient.namenode.addBlock(src, dfsClient.clientName,
-                block, excludedNodes, fileId, favoredNodes);
+                block, excludedNodes, fileId, favoredNodes, replicaGroups);
           } catch (RemoteException e) {
             IOException ue = 
               e.unwrapRemoteException(FileNotFoundException.class,
@@ -1710,6 +1723,15 @@ public class DFSOutputStream extends FSOutputSummer
       } catch (ClosedChannelException e) {
       }
     }
+  }
+
+
+  /**
+   * Shen Li: set the replica groups for the next block
+   * to be written.
+   */
+  public synchronized void setReplicaGroups(String[] replicaGroups) {
+    streamer.setReplicaGroups(replicaGroups); 
   }
 
   // Shen Li: a chunk is not a block, it can be any size, usually the buffer size

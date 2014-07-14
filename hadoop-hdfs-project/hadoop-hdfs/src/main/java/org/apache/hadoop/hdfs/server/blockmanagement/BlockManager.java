@@ -1419,9 +1419,6 @@ public class BlockManager {
     return scheduledWork;
   }
 
-  //Shen Li: TODO add a new chooseTaret() that accounts 
-  //replication group
-
   /**
    * Choose target datanodes according to the replication policy.
    * 
@@ -1434,12 +1431,25 @@ public class BlockManager {
       final int numOfReplicas, final DatanodeDescriptor client,
       final Set<Node> excludedNodes,
       final long blocksize, List<String> favoredNodes) throws IOException {
+    return chooseTarget(src, numOfReplicas, client, excludedNodes,
+                        blocksize, favoredNodes, null);
+  }
+
+  /**
+   * Shen Li: add parameter for replica group
+   */
+  public DatanodeStorageInfo[] chooseTarget(final String src,
+      final int numOfReplicas, final DatanodeDescriptor client,
+      final Set<Node> excludedNodes,
+      final long blocksize, List<String> favoredNodes,
+      List<String> replicaGroups) throws IOException {
     List<DatanodeDescriptor> favoredDatanodeDescriptors = 
         getDatanodeDescriptors(favoredNodes);
     final DatanodeStorageInfo[] targets = blockplacement.chooseTarget(src,
         numOfReplicas, client, excludedNodes, blocksize, 
         // TODO: get storage type from file
-        favoredDatanodeDescriptors, StorageType.DEFAULT);
+        favoredDatanodeDescriptors, StorageType.DEFAULT,
+        replicaGroups);
     if (targets.length < minReplication) {
       throw new IOException("File " + src + " could only be replicated to "
           + targets.length + " nodes instead of minReplication (="

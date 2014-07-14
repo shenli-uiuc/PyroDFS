@@ -80,8 +80,17 @@ public class HdfsDataOutputStream extends FSDataOutputStream {
 
   // Shen Li
   @Override
-  public void sealCurBlock() {
+  public void sealCurBlock() throws IOException {
     DFSOutputStream out = (DFSOutputStream)getWrappedStream();
     out.sealCurBlock();
+  }
+
+  /**
+   * Shen Li: implementation of setReplicaGroups
+   */
+  @Override
+  public void setReplicaGroups(String[] replicaGroups) {
+    DFSOutputStream out = (DFSOutputStream)getWrappedStream();
+    out.setReplicaGroups(replicaGroups);
   }
 }
