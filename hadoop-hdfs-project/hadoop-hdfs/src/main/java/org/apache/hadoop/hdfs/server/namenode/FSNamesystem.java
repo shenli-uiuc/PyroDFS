@@ -2643,6 +2643,9 @@ public class FSNamesystem implements Namesystem, FSClusterStats,
     blockManager.setBlockPoolId(blockPoolId);
   }
 
+  // Shen Li: TODO add a new getAdditionalBlock() that accounts
+  // replication group
+
   /**
    * The client would like to obtain an additional block for the indicated
    * filename (which is being written-to).  Return an array that consists

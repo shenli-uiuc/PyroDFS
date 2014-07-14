@@ -1419,6 +1419,9 @@ public class BlockManager {
     return scheduledWork;
   }
 
+  //Shen Li: TODO add a new chooseTaret() that accounts 
+  //replication group
+
   /**
    * Choose target datanodes according to the replication policy.
    * 
