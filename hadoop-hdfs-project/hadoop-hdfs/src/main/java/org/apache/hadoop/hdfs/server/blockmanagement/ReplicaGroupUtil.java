@@ -9,8 +9,17 @@ public class ReplicaGroupUtil {
     if (null == strId || strId.isEmpty()) {
        throw new IllegalStateException("Shen Li: Illegal replica "
            + "group id in " + replicaGroupStr);
-     }
-     return Long.parseLong(strId);
+    }
+    return Long.parseLong(strId);
+  }
+
+  public static String getPrefix(String replicaGroupStr) {
+    int endIndex = replicaGroupStr.lastIndexOf(SEPARATOR_CHAR);
+    if (endIndex < 0) {
+      throw new IllegalStateException("Shen Li: replica group "
+          + replicaGroupStr + " is in invalid form");
+    }
+    return replicaGroupStr.substring(0, endIndex);
   }
 
   public static void main(String args[]) {

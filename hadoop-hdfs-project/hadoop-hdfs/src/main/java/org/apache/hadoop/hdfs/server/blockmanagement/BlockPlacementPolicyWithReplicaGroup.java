@@ -43,14 +43,8 @@ import org.apache.hadoop.net.NodeBase;
  */
 public class BlockPlacementPolicyWithReplicaGroup 
 extends BlockPlacementPolicyDefault {
-  // TODO: has to make this persistent, make it a file in the HDFS
-  // every new replicaGroup --> DatanodeStorageInfo mapping will
-  // be one log entry in that file.
-  //
-  // The mapping from replica group id to DataStorageGroup
-  protected static TreeMap<String, DatanodeStorageInfo> rGroup2Dns = 
-               new TreeMap<String, DatanodeStorageInfo> (); 
-
+  private static ReplicaGroupManager rgManager =
+             new ReplicaGroupManager();
   @Override
   public void initialize(Configuration conf, FSClusterStats stats,
                          NetworkTopology clusterMap) {
@@ -95,8 +89,16 @@ extends BlockPlacementPolicyDefault {
                                     List<DatanodeDescriptor> favoredNodes,
                                     StorageType storageType,
                                     List<String> replicaGroups) {
+    // numOfReplicas is set for the file, which has to agree with 
+    // the number of replicaGroups
     LOG.info("Shen Li: in chooseTarget 3");
-    if (null != replicaGroups && replicaGroups.size() > 0) {
+    if (null != replicaGroups && replicaGroups.size() > 0 
+        && null == excludeNodes) { // does not handle failure node for now
+      if (replicaGroups.size() != numOfReplicas) {
+        throw new IllegalStateException("Shen Li: file replica number "
+            + numOfReplicas + "does not agree with number of "
+            + "replicaGroups " + replicaGroups.size());
+      }
       try {
         return chooseTarget(srcPath,  writer, excludeNodes, blockSize, 
                             storageType, replicaGroups);
@@ -104,6 +106,13 @@ extends BlockPlacementPolicyDefault {
         LOG.info("Shen Li: in chooseTarget 3, not enough replica exception"
                  + ", fall back to default: " + ex.getMessage());
       }
+    } else if (null != excludeNodes){
+      String details = "";
+      for (Node node: excludeNodes) {
+        details += (node.getName() + ", ");
+      }
+      LOG.info("Shen Li: in chooseTarget 3, excludeNodes is not null: "
+               + details);
     } else {
       LOG.info("Shen Li: in chooseTarget 3, null replicaGroups, "
                + "fall back to default");
@@ -116,7 +125,10 @@ extends BlockPlacementPolicyDefault {
   /**
    * Shen Li: implementation of replica group based block palcment,
    * the number of replicas is completely determined by the number
-   * of elements in replicaGroups
+   * of elements in replicaGroups.
+   *
+   * Try to place replica group with non-negtive ids into different
+   * servers. randomly place group with negtive ids
    */
   private DatanodeStorageInfo[] chooseTarget(String srcPath,
                                     Node writer,
@@ -125,7 +137,11 @@ extends BlockPlacementPolicyDefault {
                                     StorageType storageType,
                                     List<String> replicaGroups) 
       throws NotEnoughReplicasException {
-
+    // the caller guarantees that the replica number of the file
+    // agrees with the size of replicaGroups
+    //
+    // TODO: for now excludeNodes is guaranteed to be null.
+    //       handle not-null case in the future
     int chosenReplicaNum = 0;
     int[] result = 
       getMaxNodesPerRack(0, replicaGroups.size());
@@ -135,52 +151,58 @@ extends BlockPlacementPolicyDefault {
             && stats.isAvoidingStaleDataNodesForWrite());
     final List<DatanodeStorageInfo> results = 
       new ArrayList<DatanodeStorageInfo>();
+    // abandon all information in excludeNodes
     for (String replicaGroup : replicaGroups) {
       try {
         if (null == replicaGroup) {
           continue;
         }
-        DatanodeStorageInfo dnsi = rGroup2Dns.get(replicaGroup);
+        DatanodeStorageInfo dnsi = rgManager.get(replicaGroup);
         if (null == dnsi) {
           // first time seen this replicaGroup, choose a DatanodeStorageInfo
           // for it.
           //
           // TODO: a replicaGroup should be a logical object which is 
           //       respected by the balancer
-          long groupID = ReplicaGroupUtil.getReplicaGroupID(replicaGroup);
-          
-          if (0 == groupID) {
+          int groupType = rgManager.checkGroupType(replicaGroup);
+         
+          excludeNodes = rgManager.getExcludeNodes(replicaGroup);
+          if (rgManager.PRIMARY_GROUP == groupType) {
             // primary replication, store it on writer
             dnsi = 
               chooseLocalStorage(writer, excludeNodes, blockSize,
                                  maxNodesPerRack, results, avoidStaleNodes, 
                                  storageType);
-          } else {
+          } else if (rgManager.EXCLUSIVE_GROUP == groupType){
             // randomly choose a DatanodeStorageInfo, 
             // replica groups that are responsible for region server
             // split have to be mutual exclusive
             //
             // TODO 1. add excluded nodes for mutual-exclusive replica groups
-            dnsi =chooseRandom(NodeBase.ROOT, excludeNodes, blockSize, 
-                               maxNodesPerRack, results, avoidStaleNodes, 
-                               storageType);
+            dnsi = chooseRandom(NodeBase.ROOT, excludeNodes, blockSize, 
+                                maxNodesPerRack, results, avoidStaleNodes, 
+                                storageType);
+          } else {
+            // do not care about RANDOM_GROUP
+            dnsi = chooseRandom(NodeBase.ROOT, excludeNodes, blockSize,
+                                maxNodesPerRack, results, avoidStaleNodes,
+                                storageType);
           }
           if (null == dnsi) {
             LOG.warn("Shen Li: could not find a target for replica group " 
                      + replicaGroup + " of file " + srcPath);
             continue;
           }
-          addToExcludeIfNecessary(groupID, dnsi, excludeNodes);
-          rGroup2Dns.put(replicaGroup, dnsi);
-        } else {
-          // got one existing replica group
-          results.add(dnsi);
-        }
+          rgManager.addDnsiIfNecessary(replicaGroup, dnsi);
+        } 
+          
+        results.add(dnsi);
 
         ++chosenReplicaNum;
       } catch (IllegalStateException e) {
         LOG.error("Shen Li: error decoding replica group id from "
             + replicaGroup + ": " + e.getMessage());
+        throw e;
       }
     }
 
@@ -196,14 +218,6 @@ extends BlockPlacementPolicyDefault {
 
     return getPipeline(writer,
         results.toArray(new DatanodeStorageInfo[results.size()]));
-  }
-
-  /**
-   * Shen Li: TODO implement
-   */
-  private void addToExcludeIfNecessary(long groupID, 
-                 DatanodeStorageInfo dnsi, Set<Node> excludeNodes) {
-    // TODO: move this to ReplicaGroupUtils.java
   }
 
   @Override
