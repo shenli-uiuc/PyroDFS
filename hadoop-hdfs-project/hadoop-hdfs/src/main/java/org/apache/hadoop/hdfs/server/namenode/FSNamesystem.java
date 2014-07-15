@@ -2665,6 +2665,15 @@ public class FSNamesystem implements Namesystem, FSClusterStats,
   }
 
   /**
+   * Shen Li: split a file src into two files destA and destB reusing 
+   * existing blocks
+   */
+  public boolean splitFileReuseBlocks(String src, String destA, String destB,
+                                      long splitOffset) {
+    return false;
+  }
+
+  /**
    * Shen Li: add parameter replicaGroups
    */
   LocatedBlock getAdditionalBlock(String src, long fileId, String clientName,

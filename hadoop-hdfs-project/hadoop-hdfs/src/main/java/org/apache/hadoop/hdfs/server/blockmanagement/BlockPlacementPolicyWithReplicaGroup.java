@@ -92,6 +92,12 @@ extends BlockPlacementPolicyDefault {
     // numOfReplicas is set for the file, which has to agree with 
     // the number of replicaGroups
     LOG.info("Shen Li: in chooseTarget 3");
+    String strGroups = "";
+    if (null != replicaGroups) {
+      for (String replicaGroup : replicaGroups)
+        strGroups += (replicaGroup + ", ");
+    }
+    LOG.info("Shen Li: replicaGroups " + strGroups);
     if (null != replicaGroups && replicaGroups.size() > 0 
         && null == excludeNodes) { // does not handle failure node for now
       if (replicaGroups.size() != numOfReplicas) {
@@ -167,6 +173,9 @@ extends BlockPlacementPolicyDefault {
           int groupType = rgManager.checkGroupType(replicaGroup);
          
           excludeNodes = rgManager.getExcludeNodes(replicaGroup);
+          if (null == excludeNodes) {
+            excludeNodes = new TreeSet<Node> ();
+          }
           if (rgManager.PRIMARY_GROUP == groupType) {
             // primary replication, store it on writer
             dnsi = 
@@ -177,8 +186,6 @@ extends BlockPlacementPolicyDefault {
             // randomly choose a DatanodeStorageInfo, 
             // replica groups that are responsible for region server
             // split have to be mutual exclusive
-            //
-            // TODO 1. add excluded nodes for mutual-exclusive replica groups
             dnsi = chooseRandom(NodeBase.ROOT, excludeNodes, blockSize, 
                                 maxNodesPerRack, results, avoidStaleNodes, 
                                 storageType);

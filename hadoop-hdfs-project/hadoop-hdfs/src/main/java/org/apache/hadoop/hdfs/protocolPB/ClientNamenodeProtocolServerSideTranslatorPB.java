@@ -437,6 +437,7 @@ public class ClientNamenodeProtocolServerSideTranslatorPB implements
     try {
       List<DatanodeInfoProto> excl = req.getExcludeNodesList();
       List<String> favor = req.getFavoredNodesList();
+      List<String> groups = req.getReplicaGroupsList();
       LocatedBlock result = server.addBlock(
           req.getSrc(),
           req.getClientName(),
@@ -444,7 +445,9 @@ public class ClientNamenodeProtocolServerSideTranslatorPB implements
           (excl == null || excl.size() == 0) ? null : PBHelper.convert(excl
               .toArray(new DatanodeInfoProto[excl.size()])), req.getFileId(),
           (favor == null || favor.size() == 0) ? null : favor
-              .toArray(new String[favor.size()]));
+              .toArray(new String[favor.size()]),
+          (groups== null || groups.size()== 0) ? null : groups
+              .toArray(new String[groups.size()]));
       return AddBlockResponseProto.newBuilder()
           .setBlock(PBHelper.convert(result)).build();
     } catch (IOException e) {

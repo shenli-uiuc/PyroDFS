@@ -573,7 +573,6 @@ class NameNodeRpcServer implements NamenodeProtocols {
   }
 
   // Shen Li: add parameter replicaGroups. 
-  // TODO add this method to protocol
   @Override
   public LocatedBlock addBlock(String src, String clientName, 
       ExtendedBlock previous, DatanodeInfo[] excludedNodes, long fileId,
@@ -591,8 +590,11 @@ class NameNodeRpcServer implements NamenodeProtocols {
     }
     List<String> favoredNodesList = (favoredNodes == null) ? null
         : Arrays.asList(favoredNodes);
+    List<String> replicaGroupsList= (replicaGroups== null) ? null
+        : Arrays.asList(replicaGroups);
     LocatedBlock locatedBlock = namesystem.getAdditionalBlock(src, fileId,
-        clientName, previous, excludedNodesSet, favoredNodesList);
+        clientName, previous, excludedNodesSet, favoredNodesList, 
+        replicaGroupsList);
     if (locatedBlock != null)
       metrics.incrAddBlockOps();
     return locatedBlock;
