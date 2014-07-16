@@ -577,6 +577,22 @@ public abstract class FileSystem extends Configured implements Closeable {
     return out;
   }
 
+  /**
+   * Shen Li: split the src file into destA and destB
+   * at the given offset reusing src's blocks
+   */
+  public boolean split(Path src, Path destA, Path destB, 
+                       long splitPoint) throw IOException {
+    // 1. check if src is valid
+    // 2. create file for destA and destB
+    // 3. pass it to
+    // this is implemented in HdfsFileSystem
+    throw new IOException("abstract class FileSystem does not"
+        + "support split() method. Call it on an DistributedFileSystem"
+        + "Instance");
+    return false;
+  }
+
   /** create a directory with the provided permission
    * The permission of the directory is set to be the provided permission as in
    * setPermission, not permission&~umask

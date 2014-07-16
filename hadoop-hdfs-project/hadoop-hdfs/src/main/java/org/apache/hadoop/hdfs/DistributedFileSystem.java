@@ -1925,4 +1925,16 @@ public class DistributedFileSystem extends FileSystem {
       }
     }.resolve(this, absF);
   }
+
+  /**
+   * split a file reusing blocks.
+   */
+  @Override
+  public boolean split(Path stc, Path destA, Path destB
+                       long splitPoint) throws IOException {
+    // call dfs.split() 
+    // dfs is a instance of DFSClienit
+    // TODO deliver this all the way to FSNamesystem
+    return false;  
+  }
 }

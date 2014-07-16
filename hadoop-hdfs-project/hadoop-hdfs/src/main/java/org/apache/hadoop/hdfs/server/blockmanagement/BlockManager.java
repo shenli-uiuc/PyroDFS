@@ -3132,6 +3132,13 @@ public class BlockManager {
     return blocksMap.size();
   }
 
+  /**
+   * Shen Li
+   */
+  public void moveBlocks() {
+    
+  }
+
   public void removeBlock(Block block) {
     assert namesystem.hasWriteLock();
     // No need to ACK blocks that are being removed entirely

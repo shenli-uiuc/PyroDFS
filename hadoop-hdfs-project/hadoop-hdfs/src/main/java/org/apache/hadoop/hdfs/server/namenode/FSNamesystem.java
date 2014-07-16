@@ -2668,8 +2668,78 @@ public class FSNamesystem implements Namesystem, FSClusterStats,
    * Shen Li: split a file src into two files destA and destB reusing 
    * existing blocks
    */
-  public boolean splitFileReuseBlocks(String src, String destA, String destB,
-                                      long splitOffset) {
+  public boolean splitFileReuseBlocks(String src, 
+                    String destA, String destB,
+                    long srcFid, long destAfid, long destBfid,
+                    long splitOffset, String clientName)
+      throws LeaseExpiredException, NotReplicatedYetException,
+             QuotaExceededException, SafeModeException, 
+             UnresolvedLinkException, IOException {
+    // TODO: splitPoint <= 0, splitPoint >= fileSize, use move
+    LOG.info("Shen Li: calling FSNamesystem.splitFileReuseBlocks() "
+        + "with src = " + src + ", srcFid = " + srcFid 
+        + ", destA = " + destA + ", destAFid = " + destAFid
+        + ", destB = " + destB + ", destBFid = " + destBFid
+        + ", splitOffset = " + splitOffset 
+        + ", clientName = " + clientName);
+
+    checkOperation(OperationCategory.WRITE);
+    byte[][] srcPathComps = 
+      FSDirectory.getPathComponentsForReservedPath(src);
+    byte[][] destAPathComps =
+      FSDirectory.getPathComponentsForReservedPath(destA);
+    byte[][] destBPathComps =
+      FSDirectory.getPathComponentsForReservedPath(destB);
+    writeLock();
+    try{
+      // reading inodes for all files
+      checkOperation(OperationCategory.WRITE);
+      src = FSDirectory.resolvePath(src, srcPathComps, dir);
+      destA = FSDirectory.resolvePath(destA, destAPathComps, dir);
+      destB = FSDirectory.resolvePath(destB, destBPathComps, dir);
+      final INode[] srcINodes = dir.getINodesInPath4Write(src).getINodes();
+      final INodeFile srcFile = srcINodes[srcINodes.length - 1].asFile();
+      final INode[] destAINodes = 
+                      dir.getINodesInPath4Write(destA).getINodes();
+      final INodeFile destAFile = 
+                        destAINodes[destAINodes.length - 1].asFile();
+      final INode[] destBINodes =
+                      dir.getINodesInPath4Write(destB).getINodes();
+      final INodeFile destBFile =
+                        destBInodes[destBINodes.length - 1].asFile();
+
+      final BlockInfo[] srcBlockInfos = srcFile.getBlocks();
+
+      // check if the split point is at split boundary
+      long offset = 0;
+      long prevOffset = 0;
+      int splitIndex = 0;
+      for (BlockInfo blockInfo : srcBlockInfos) {
+        ++ splitIndex;
+        offset += blockInfo.getNumBytes();
+        if (offset == splitOffset) {
+          // valid split offset
+          break;
+        } 
+        if (offset > splitOffset) {
+          throw new IllegalStateException("Shen Li: split offset " 
+              + splitOffset + "is not at block boundary, previous boundary "
+              + prevOffset + ", next boundary " + offset);
+        }
+        prevOffset = offset;
+      }
+
+      // do split
+      // [0, splitIndex) --> destA
+      // [splitIndex, last] --> destB
+      offset = 0;
+      // configure the first and the last block meta
+      // call dir.moveBlocks() on all those blocks 
+      // take a look at dir.persistNewBlock() to modify FSImage
+    } finally {
+      writeUnlock();
+    }
+
     return false;
   }
 
