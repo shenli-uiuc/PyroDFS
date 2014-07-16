@@ -163,8 +163,11 @@ extends BlockPlacementPolicyDefault {
         if (null == replicaGroup) {
           continue;
         }
+        LOG.info("Shen Li: before rgManager.get()");
         DatanodeStorageInfo dnsi = rgManager.get(replicaGroup);
         if (null == dnsi) {
+          LOG.info("Shen Li: replicaGroup " + replicaGroup 
+              + " returns null dnsi");
           // first time seen this replicaGroup, choose a DatanodeStorageInfo
           // for it.
           //
@@ -173,6 +176,8 @@ extends BlockPlacementPolicyDefault {
           int groupType = rgManager.checkGroupType(replicaGroup);
          
           excludeNodes = rgManager.getExcludeNodes(replicaGroup);
+          LOG.info("Shen Li: replicaGroup get exlucdeNodes "
+              + excludeNodes);
           if (null == excludeNodes) {
             excludeNodes = new TreeSet<Node> ();
           }
@@ -201,9 +206,10 @@ extends BlockPlacementPolicyDefault {
             continue;
           }
           rgManager.addDnsiIfNecessary(replicaGroup, dnsi);
-        } 
-          
-        results.add(dnsi);
+        } else {
+          // existing mapping 
+          results.add(dnsi);
+        }
 
         ++chosenReplicaNum;
       } catch (IllegalStateException e) {

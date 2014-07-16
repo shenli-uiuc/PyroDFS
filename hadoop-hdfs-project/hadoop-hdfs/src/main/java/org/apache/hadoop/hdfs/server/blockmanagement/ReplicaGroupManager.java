@@ -51,8 +51,9 @@ public class ReplicaGroupManager {
   }
 
   public static Set<Node> getExcludeNodes(String groupStr) {
+    String prefix = ReplicaGroupUtil.getPrefix(groupStr);
     synchronized (excludeNodes) {
-      return excludeNodes.get(groupStr);  
+      return excludeNodes.get(prefix);  
     }
   }
 

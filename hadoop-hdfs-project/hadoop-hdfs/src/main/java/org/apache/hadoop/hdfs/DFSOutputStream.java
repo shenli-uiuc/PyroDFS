@@ -539,6 +539,7 @@ public class DFSOutputStream extends FSOutputSummer
             if(DFSClient.LOG.isDebugEnabled()) {
               DFSClient.LOG.debug("Allocating new block");
             }
+            DFSClient.LOG.info("before nextBlockOutputStream");
             setPipeline(nextBlockOutputStream());
             initDataStreaming();
           } else if (stage == BlockConstructionStage.PIPELINE_SETUP_APPEND) {
@@ -1283,6 +1284,12 @@ public class DFSOutputStream extends FSOutputSummer
         accessToken = lb.getBlockToken();
         nodes = lb.getLocations();
 
+        String strNodes = "";
+        for (DatanodeInfo node : nodes) {
+          strNodes += (node + ", ");
+        }
+        DFSClient.LOG.info("Shen Li: " + strNodes);
+        
         //
         // Connect to first DataNode in the list.
         //
@@ -1294,8 +1301,12 @@ public class DFSOutputStream extends FSOutputSummer
           block = null;
           DFSClient.LOG.info("Excluding datanode " + nodes[errorIndex]);
           excludedNodes.put(nodes[errorIndex], nodes[errorIndex]);
+          DFSClient.LOG.info("Shen Li: exclude node " + nodes[errorIndex]
+                             + " on client");
         }
       } while (!success && --count >= 0);
+
+      DFSClient.LOG.info("===================================Shen Li: successfully write one block1");
 
       if (!success) {
         throw new IOException("Unable to create new block.");
@@ -1382,7 +1393,7 @@ public class DFSOutputStream extends FSOutputSummer
                       + firstBadLink);
             } else {
               throw new IOException("Bad connect ack with firstBadLink as "
-                  + firstBadLink);
+                  + firstBadLink + ", Shen Li: " + pipelineStatus);
             }
           }
           assert null == blockStream : "Previous blockStream unclosed";
