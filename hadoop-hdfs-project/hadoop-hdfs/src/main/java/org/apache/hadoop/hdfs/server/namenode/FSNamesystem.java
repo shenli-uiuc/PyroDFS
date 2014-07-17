@@ -2745,6 +2745,7 @@ public class FSNamesystem implements Namesystem, FSClusterStats,
       // BlockInfo extends Block
       dir.splitFileReuseBlocks(src, srcFile, destA, destAFile, 
                 destB, destBFile, srcBlockInfos, splitIndex);
+      leaseManager.removeLeaseWithPrefixPath(src);
     } finally {
       writeUnlock();
     }

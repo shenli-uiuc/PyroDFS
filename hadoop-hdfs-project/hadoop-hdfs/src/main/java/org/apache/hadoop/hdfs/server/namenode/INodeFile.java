@@ -419,13 +419,6 @@ public class INodeFile extends INodeWithAdditionalFields
     }
   }
 
-  /**
-   * Shen Li:
-   */
-  void addBlocks(BlockInfo [] newBlocks, int offset, int num) {
-    // do not use addBlock() to avoid frequent array copy
-  }
-
   /** Set the blocks. */
   public void setBlocks(BlockInfo[] blocks) {
     this.blocks = blocks;

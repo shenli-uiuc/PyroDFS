@@ -478,12 +478,55 @@ public class FSDirectory implements Closeable {
   boolean splitFileReuseBlocks(String src,  INodeFile srcFileNode,
                                String destA, INodeFile destAFileNode,
                                String destB, INodeFile destBFileNode,
-                               Block [] blocks, int splitIndex) 
+                               BlockInfo [] blocks, int splitIndex) 
       throws IOException {
-    // TODO: implement
-    // srcFileNode.removeBlocks();
-    // dstFileNode.addBlocks();
-    // getBlockManager.moveBlocks(block, srcFileNode, dstFileNode...);
+    // TODO: need to close dest files in some ancestor callers
+    Preconditions.checkArgument(destAFileNode.isUnderConstruction());
+    Preconditions.checkArgument(destBFileNode.isUnderConstruction());
+    waitForReady();
+    long now = Now();
+    BlockInfos [] destABlocks = new BlockInfos[splitIndex];
+    BlockInfos [] destBBlocks = new BlockInfos[blocks.length - splitIndex];
+     
+    System.arraycopy(blocks, 0, destABlocks, 0, destABlocks.length);
+    System.arraycopy(blocks, destABlocks.length, 
+                     destBBlocks, 0, destBBlocks.length);
+
+    writeLock();
+    try {
+      // step 1: add all blocks into the new dest files
+      destAFileNode.setBlocks(destABlocks);
+      destBFileNode.setBlocks(destBBlocks);
+      for (BlockInfo block: destABlocks) {
+        getBlockManager().addBlockCollection(block, destAFileNode);
+      }
+      
+      for (BlockInfo block: destBBlocks) {
+        getBlockManager().addBlockCollection(block, destBFileNode);
+      }
+
+      // step 2: delete src file meta
+      // record modification
+      final int latestSnapshot = srcIip.getLatestSnapshotId();
+      INode targetNode = srcIip.getLastINode();
+      targetNode = targetNode.recordModification(latestSnapshot);
+      srcIip.setLastINode(targetNode);
+
+      // Remove the node from the namespace
+      removeLastINode(srcIip);
+
+      // set the parent's modification time
+      final INodeDirectory parent = targetNode.getParent();
+      parent.updateModificationTime(mtime, latestSnapshot);
+    
+      // add logSplit TODO implement logSplit
+      fsImage.getEditLog()
+        .logSplitFileReuseBlocks(src, destA, destB, now, logRetryCache);
+      // TODO: should we incrSplitFileCount?
+      //incrDeletedFileCount(filesRemoved);
+    } finally {
+      writeUnlock();
+    }
     return false;
   }
 
@@ -1311,6 +1354,8 @@ public class FSDirectory implements Closeable {
     
     // update inodeMap
     removeFromInodeMap(Arrays.asList(allSrcInodes));
+    // leases on the src file will be removed in FSNamesystem which is 
+    // the direct caller
     
     trgInode.setModificationTime(timestamp, trgLatestSnapshot);
     trgParent.updateModificationTime(timestamp, trgLatestSnapshot);
