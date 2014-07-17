@@ -351,6 +351,14 @@ public interface ClientProtocol {
              NotReplicatedYetException, SafeModeException,
              UnresolvedLinkException, IOException;
 
+  /**
+   * Shen Li: split the block list of file into two files
+   */
+  @Idempotent
+  public boolean splitFileReuseBlocks(String src, 
+                       String destA, String destB,
+                       long srcFid, long destAFid, long destBFid,
+                       long splitOffset, String clientName) throws IOException;
 
   /** 
    * Get a datanode for an existing pipeline.

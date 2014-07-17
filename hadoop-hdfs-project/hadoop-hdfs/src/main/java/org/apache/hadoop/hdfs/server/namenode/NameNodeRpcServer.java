@@ -562,7 +562,22 @@ class NameNodeRpcServer implements NamenodeProtocols {
       throws IOException {
     namesystem.setOwner(src, username, groupname);
   }
-  
+ 
+  /**
+   * Shen Li: split the block list of a file into two new files
+   */
+  @Override
+  public boolean splitFileReuseBlocks(String src, 
+                       String destA, String destB,
+                       long srcFid, long destAFid, long destBFid,
+                       long splitOffset, String clientName) 
+      throws IOException {
+    return namesystem.splitFileReuseBlocks(src, 
+                            destA, destB, 
+                            srcFid, destAFid, destBFid,
+                            splitOffset, clientName);
+  }
+
   @Override
   public LocatedBlock addBlock(String src, String clientName,
       ExtendedBlock previous, DatanodeInfo[] excludedNodes, long fileId,

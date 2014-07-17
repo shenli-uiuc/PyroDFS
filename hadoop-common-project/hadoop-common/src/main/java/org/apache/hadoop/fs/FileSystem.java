@@ -582,7 +582,7 @@ public abstract class FileSystem extends Configured implements Closeable {
    * at the given offset reusing src's blocks
    */
   public boolean split(Path src, Path destA, Path destB, 
-                       long splitPoint) throw IOException {
+                       long splitPoint) throws IOException {
     // 1. check if src is valid
     // 2. create file for destA and destB
     // 3. pass it to
@@ -590,7 +590,6 @@ public abstract class FileSystem extends Configured implements Closeable {
     throw new IOException("abstract class FileSystem does not"
         + "support split() method. Call it on an DistributedFileSystem"
         + "Instance");
-    return false;
   }
 
   /** create a directory with the provided permission

@@ -2670,7 +2670,7 @@ public class FSNamesystem implements Namesystem, FSClusterStats,
    */
   public boolean splitFileReuseBlocks(String src, 
                     String destA, String destB,
-                    long srcFid, long destAfid, long destBfid,
+                    long srcFid, long destAFid, long destBFid,
                     long splitOffset, String clientName)
       throws LeaseExpiredException, NotReplicatedYetException,
              QuotaExceededException, SafeModeException, 
@@ -2706,9 +2706,19 @@ public class FSNamesystem implements Namesystem, FSClusterStats,
       final INode[] destBINodes =
                       dir.getINodesInPath4Write(destB).getINodes();
       final INodeFile destBFile =
-                        destBInodes[destBINodes.length - 1].asFile();
+                        destBINodes[destBINodes.length - 1].asFile();
 
       final BlockInfo[] srcBlockInfos = srcFile.getBlocks();
+      final BlockInfo[] destABlockInfos = destAFile.getBlocks();
+      final BlockInfo[] destBBlockInfos = destBFile.getBlocks();
+      if (destABlockInfos != null && destABlockInfos.length > 0) {
+        throw new IOException("Shen Li: destA file already contains "
+            + destABlockInfos.length + " blocks");
+      }
+      if (destBBlockInfos != null && destBBlockInfos.length > 0) {
+        throw new IOException("Shen Li: destB file already contains "
+            + destBBlockInfos.length + " blocks");
+      }
 
       // check if the split point is at split boundary
       long offset = 0;
@@ -2732,15 +2742,19 @@ public class FSNamesystem implements Namesystem, FSClusterStats,
       // do split
       // [0, splitIndex) --> destA
       // [splitIndex, last] --> destB
-      offset = 0;
       // configure the first and the last block meta
-      // call dir.moveBlocks() on all those blocks 
+      // call dir.split() on all those blocks 
       // take a look at dir.persistNewBlock() to modify FSImage
+      // all of the operations needs to be contained in dir.split()
+      //
+      // BlockInfo extends Block
+      dir.splitFileReuseBlocks(src, srcFile, destA, destAFile, 
+                destB, destBFile, srcBlockInfos, splitIndex);
     } finally {
       writeUnlock();
     }
 
-    return false;
+    return true;
   }
 
   /**

@@ -475,9 +475,11 @@ public class FSDirectory implements Closeable {
   /**
    * Shen Li: move a block from src to dest
    */
-  boolean moveBlocks(String src, INodeFile srcFileNode,
-                     String dst, INodeFile dstFileNode,
-                     Block [] blocks, int offset, int len) {
+  boolean splitFileReuseBlocks(String src,  INodeFile srcFileNode,
+                               String destA, INodeFile destAFileNode,
+                               String destB, INodeFile destBFileNode,
+                               Block [] blocks, int splitIndex) 
+      throws IOException {
     // TODO: implement
     // srcFileNode.removeBlocks();
     // dstFileNode.addBlocks();
