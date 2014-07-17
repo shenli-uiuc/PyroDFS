@@ -2669,19 +2669,14 @@ public class FSNamesystem implements Namesystem, FSClusterStats,
    * existing blocks
    */
   public boolean splitFileReuseBlocks(String src, 
-                    String destA, String destB,
-                    long srcFid, long destAFid, long destBFid,
-                    long splitOffset, String clientName)
+                    String destA, String destB, long splitOffset)
       throws LeaseExpiredException, NotReplicatedYetException,
              QuotaExceededException, SafeModeException, 
              UnresolvedLinkException, IOException {
     // TODO: splitPoint <= 0, splitPoint >= fileSize, use move
     LOG.info("Shen Li: calling FSNamesystem.splitFileReuseBlocks() "
-        + "with src = " + src + ", srcFid = " + srcFid 
-        + ", destA = " + destA + ", destAFid = " + destAFid
-        + ", destB = " + destB + ", destBFid = " + destBFid
-        + ", splitOffset = " + splitOffset 
-        + ", clientName = " + clientName);
+        + "with src = " + src + ", destA = " + destA
+        + ", destB = " + destB + ", splitOffset = " + splitOffset );
 
     checkOperation(OperationCategory.WRITE);
     byte[][] srcPathComps = 

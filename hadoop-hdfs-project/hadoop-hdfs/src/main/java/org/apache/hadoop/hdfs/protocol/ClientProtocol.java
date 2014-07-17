@@ -357,8 +357,7 @@ public interface ClientProtocol {
   @Idempotent
   public boolean splitFileReuseBlocks(String src, 
                        String destA, String destB,
-                       long srcFid, long destAFid, long destBFid,
-                       long splitOffset, String clientName) throws IOException;
+                       long splitOffset) throws IOException;
 
   /** 
    * Get a datanode for an existing pipeline.

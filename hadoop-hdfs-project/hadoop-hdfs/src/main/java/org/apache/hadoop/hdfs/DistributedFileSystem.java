@@ -1930,11 +1930,12 @@ public class DistributedFileSystem extends FileSystem {
    * split a file reusing blocks.
    */
   @Override
-  public boolean split(Path stc, Path destA, Path destB,
-                       long splitPoint) throws IOException {
-    // call dfs.split() 
-    // dfs is a instance of DFSClienit
-    // TODO deliver this all the way to FSNamesystem
-    return false;  
+  public boolean splitFileReuseBlocks(Path src, 
+                    Path destA, Path destB,
+                    long splitPoint) throws IOException {
+    return dfs.splitFileReuseBlocks(getPathName(src),
+                                    getPathName(destA),
+                                    getPathName(destB),
+                                    splitPoint);
   }
 }

@@ -204,6 +204,19 @@ message DeleteResponseProto {
     required bool result = 1;
 }
 
+// Shen Li: for split file reuse blocks
+message SplitFileReuseBlocksRequestProto {
+  required string src = 1;
+  required string destA = 2;
+  required string destB = 3;
+  required uint64 splitOffset = 4; 
+}
+
+// Shen Li
+message SplitFileReuseBlocksResponseProto {
+  required bool result = 1;
+}
+
 message MkdirsRequestProto {
   required string src = 1;
   required FsPermissionProto masked = 2;
@@ -660,6 +673,9 @@ service ClientNamenodeProtocol {
   rpc rename(RenameRequestProto) returns(RenameResponseProto);
   rpc rename2(Rename2RequestProto) returns(Rename2ResponseProto);
   rpc delete(DeleteRequestProto) returns(DeleteResponseProto);
+  // Shen Li
+  rpc splitFileReuseBlocks(SplitFileReuseBlocksRequestProto) 
+                   returns(SplitFileReuseBlocksResponseProto);
   rpc mkdirs(MkdirsRequestProto) returns(MkdirsResponseProto);
   rpc getListing(GetListingRequestProto) returns(GetListingResponseProto);
   rpc renewLease(RenewLeaseRequestProto) returns(RenewLeaseResponseProto);

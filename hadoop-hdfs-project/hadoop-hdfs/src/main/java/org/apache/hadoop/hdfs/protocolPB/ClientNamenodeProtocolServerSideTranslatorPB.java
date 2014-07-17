@@ -74,6 +74,10 @@ import org.apache.hadoop.hdfs.protocol.proto.ClientNamenodeProtocolProtos.Create
 import org.apache.hadoop.hdfs.protocol.proto.ClientNamenodeProtocolProtos.CreateSymlinkResponseProto;
 import org.apache.hadoop.hdfs.protocol.proto.ClientNamenodeProtocolProtos.DeleteRequestProto;
 import org.apache.hadoop.hdfs.protocol.proto.ClientNamenodeProtocolProtos.DeleteResponseProto;
+//Shen Li
+import org.apache.hadoop.hdfs.protocol.proto.ClientNamenodeProtocolProtos.SplitFileReuseBlocksRequestProto;
+import org.apache.hadoop.hdfs.protocol.proto.ClientNamenodeProtocolProtos.SplitFileReuseBlocksResponseProto;
+
 import org.apache.hadoop.hdfs.protocol.proto.ClientNamenodeProtocolProtos.DeleteSnapshotRequestProto;
 import org.apache.hadoop.hdfs.protocol.proto.ClientNamenodeProtocolProtos.DeleteSnapshotResponseProto;
 import org.apache.hadoop.hdfs.protocol.proto.ClientNamenodeProtocolProtos.DisallowSnapshotRequestProto;
@@ -541,6 +545,25 @@ public class ClientNamenodeProtocolServerSideTranslatorPB implements
       throw new ServiceException(e);
     }   
     return VOID_RENAME2_RESPONSE;
+  }
+
+  /**
+   * Shen Li
+   */
+  @Override
+  public SplitFileReuseBlocksResponseProto 
+  splitFileReuseBlocks(RpcController controller, 
+                       SplitFileReuseBlocksRequestProto req)
+      throws ServiceException {
+    try {
+      boolean result = server.splitFileReuseBlocks(req.getSrc(),
+                                req.getDestA(), req.getDestB(),
+                                req.getSplitOffset());
+      return SplitFileReuseBlocksResponseProto.newBuilder()
+             .setResult(result).build();
+    } catch (IOException e) {
+      throw new ServiceException(e);
+    }
   }
 
   @Override

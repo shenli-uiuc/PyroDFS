@@ -141,6 +141,9 @@ import org.apache.hadoop.hdfs.protocol.proto.ClientNamenodeProtocolProtos.SetSaf
 import org.apache.hadoop.hdfs.protocol.proto.ClientNamenodeProtocolProtos.SetTimesRequestProto;
 import org.apache.hadoop.hdfs.protocol.proto.ClientNamenodeProtocolProtos.UpdateBlockForPipelineRequestProto;
 import org.apache.hadoop.hdfs.protocol.proto.ClientNamenodeProtocolProtos.UpdatePipelineRequestProto;
+//Shen Li
+import org.apache.hadoop.hdfs.protocol.proto.ClientNamenodeProtocolProtos.SplitFileReuseBlocksRequestProto;
+
 import org.apache.hadoop.hdfs.security.token.block.DataEncryptionKey;
 import org.apache.hadoop.hdfs.security.token.delegation.DelegationTokenIdentifier;
 import org.apache.hadoop.hdfs.server.namenode.NotReplicatedYetException;
@@ -350,6 +353,29 @@ public class ClientNamenodeProtocolTranslatorPB implements
       IOException {
     return addBlock(src, clientName, previous, excludeNodes, fileId,
                     favoredNodes, null);
+  }
+
+  /**
+   * Shen Li: split a file and reuse its blocks
+   */
+  @Override
+  public boolean splitFileReuseBlocks(String src,
+                   String destA, String destB, 
+                   long splitOffset) 
+      throws AccessControlException, FileNotFoundException, 
+             SafeModeException, UnresolvedLinkException, IOException {
+    SplitFileReuseBlocksRequestProto req = 
+      SplitFileReuseBlocksRequestProto.newBuilder()
+        .setSrc(src)
+        .setDestA(destA)
+        .setDestB(destB)
+        .setSplitOffset(splitOffset)
+        .build();
+    try {
+      return rpcProxy.splitFileReuseBlocks(null, req).getResult();
+    } catch (ServiceException e) {
+      throw ProtobufHelper.getRemoteException(e);
+    }
   }
 
   /**

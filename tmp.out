@@ -1,33 +1,671 @@
-hadoop-hdfs-project/hadoop-hdfs/src/test/java/org/apache/hadoop/hdfs/DFSTestUtil.java:    final DatanodeStorage storage = new DatanodeStorage(storageID);
-hadoop-hdfs-project/hadoop-hdfs/src/test/java/org/apache/hadoop/hdfs/server/blockmanagement/TestHeartbeatHandling.java:      dd.updateStorage(new DatanodeStorage(storageID));
-hadoop-hdfs-project/hadoop-hdfs/src/test/java/org/apache/hadoop/hdfs/server/blockmanagement/TestHeartbeatHandling.java:      dd1.updateStorage(new DatanodeStorage(DatanodeStorage.generateUuid()));
-hadoop-hdfs-project/hadoop-hdfs/src/test/java/org/apache/hadoop/hdfs/server/blockmanagement/TestHeartbeatHandling.java:      dd2.updateStorage(new DatanodeStorage(DatanodeStorage.generateUuid()));
-hadoop-hdfs-project/hadoop-hdfs/src/test/java/org/apache/hadoop/hdfs/server/blockmanagement/TestHeartbeatHandling.java:      dd3.updateStorage(new DatanodeStorage(DatanodeStorage.generateUuid()));
-hadoop-hdfs-project/hadoop-hdfs/src/test/java/org/apache/hadoop/hdfs/server/blockmanagement/BlockManagerTestUtil.java:      dn.updateStorage(new DatanodeStorage(DatanodeStorage.generateUuid()));
-hadoop-hdfs-project/hadoop-hdfs/src/test/java/org/apache/hadoop/hdfs/server/blockmanagement/BlockManagerTestUtil.java:        initializeStorage? new DatanodeStorage(DatanodeStorage.generateUuid()): null);
-hadoop-hdfs-project/hadoop-hdfs/src/test/java/org/apache/hadoop/hdfs/server/blockmanagement/BlockManagerTestUtil.java:      DatanodeStorage dns = new DatanodeStorage(
-hadoop-hdfs-project/hadoop-hdfs/src/test/java/org/apache/hadoop/hdfs/server/blockmanagement/TestBlockManager.java:    rackCNode.updateStorage(new DatanodeStorage(DatanodeStorage.generateUuid()));
-hadoop-hdfs-project/hadoop-hdfs/src/test/java/org/apache/hadoop/hdfs/server/blockmanagement/TestBlockManager.java:    bm.processReport(node, new DatanodeStorage(ds.getStorageID()), "pool", 
-hadoop-hdfs-project/hadoop-hdfs/src/test/java/org/apache/hadoop/hdfs/server/blockmanagement/TestBlockManager.java:    bm.processReport(node, new DatanodeStorage(ds.getStorageID()), "pool",
-hadoop-hdfs-project/hadoop-hdfs/src/test/java/org/apache/hadoop/hdfs/server/blockmanagement/TestBlockManager.java:    bm.processReport(node, new DatanodeStorage(ds.getStorageID()), "pool",
-hadoop-hdfs-project/hadoop-hdfs/src/test/java/org/apache/hadoop/hdfs/server/blockmanagement/TestBlockManager.java:    bm.processReport(node, new DatanodeStorage(ds.getStorageID()), "pool",
-hadoop-hdfs-project/hadoop-hdfs/src/test/java/org/apache/hadoop/hdfs/server/common/TestJspHelper.java:    BlockManagerTestUtil.updateStorage(dnDesc1, new DatanodeStorage("dnStorage1"));
-hadoop-hdfs-project/hadoop-hdfs/src/test/java/org/apache/hadoop/hdfs/server/common/TestJspHelper.java:    BlockManagerTestUtil.updateStorage(dnDesc2, new DatanodeStorage("dnStorage2"));
-hadoop-hdfs-project/hadoop-hdfs/src/test/java/org/apache/hadoop/hdfs/server/common/TestJspHelper.java:    DatanodeStorage dns1 = new DatanodeStorage("dnStorage1");
-hadoop-hdfs-project/hadoop-hdfs/src/test/java/org/apache/hadoop/hdfs/server/common/TestJspHelper.java:    DatanodeStorage dns2 = new DatanodeStorage("dnStorage2");
-hadoop-hdfs-project/hadoop-hdfs/src/test/java/org/apache/hadoop/hdfs/server/namenode/TestDeadDatanode.java:        new DatanodeStorage(reg.getDatanodeUuid()),
-hadoop-hdfs-project/hadoop-hdfs/src/test/java/org/apache/hadoop/hdfs/server/namenode/TestDeadDatanode.java:        new DatanodeStorage(reg.getDatanodeUuid()),
-hadoop-hdfs-project/hadoop-hdfs/src/test/java/org/apache/hadoop/hdfs/server/namenode/NNThroughputBenchmark.java:      storage = new DatanodeStorage(DatanodeStorage.generateUuid());
-hadoop-hdfs-project/hadoop-hdfs/src/test/java/org/apache/hadoop/hdfs/server/datanode/SimulatedFSDataset.java:      dnStorage = new DatanodeStorage(
-hadoop-hdfs-project/hadoop-hdfs/src/test/java/org/apache/hadoop/hdfs/server/datanode/TestBlockHasMultipleReplicasOnSameDN.java:      DatanodeStorage dns = new DatanodeStorage(v.getStorageID());
-hadoop-hdfs-project/hadoop-hdfs/src/test/java/org/apache/hadoop/hdfs/server/datanode/TestIncrementalBrVariations.java:    final DatanodeStorage newStorage = new DatanodeStorage(newStorageUuid);
-hadoop-hdfs-project/hadoop-hdfs/src/test/java/org/apache/hadoop/hdfs/protocolPB/TestPBHelper.java:    DatanodeStorage dns1 = new DatanodeStorage(
-hadoop-hdfs-project/hadoop-hdfs/src/main/java/org/apache/hadoop/hdfs/server/datanode/fsdataset/impl/FsDatasetImpl.java:          new DatanodeStorage(sd.getStorageUuid(), DatanodeStorage.State.NORMAL, storageType));
-hadoop-hdfs-project/hadoop-hdfs/src/main/java/org/apache/hadoop/hdfs/server/datanode/fsdataset/impl/FsVolumeImpl.java:    return new DatanodeStorage(storageID, DatanodeStorage.State.NORMAL, storageType);
-hadoop-hdfs-project/hadoop-hdfs/src/main/java/org/apache/hadoop/hdfs/server/protocol/StorageReceivedDeletedBlocks.java:    this.storage = new DatanodeStorage(storageID);
-hadoop-hdfs-project/hadoop-hdfs/src/main/java/org/apache/hadoop/hdfs/protocolPB/PBHelper.java:    return new DatanodeStorage(s.getStorageUuid(),
-hadoop-hdfs-project/hadoop-hdfs/src/main/java/org/apache/hadoop/hdfs/protocolPB/PBHelper.java:            new DatanodeStorage(p.getStorageUuid()),
-hadoop-hdfs-project/hadoop-hdfs/target/src-html/org/apache/hadoop/hdfs/server/protocol/StorageReceivedDeletedBlocks.html:<span class="sourceLineNo">045</span>    this.storage = new DatanodeStorage(storageID);<a name="line.45"></a>
-hadoop-hdfs-project/hadoop-hdfs/target/src-html/org/apache/hadoop/hdfs/protocolPB/PBHelper.html:<span class="sourceLineNo">1612</span>    return new DatanodeStorage(s.getStorageUuid(),<a name="line.1612"></a>
-hadoop-hdfs-project/hadoop-hdfs/target/src-html/org/apache/hadoop/hdfs/protocolPB/PBHelper.html:<span class="sourceLineNo">1661</span>            new DatanodeStorage(p.getStorageUuid()),<a name="line.1661"></a>
-grep: input file ‘tmp.out’ is also the output
+[INFO] Scanning for projects...
+[WARNING] 
+[WARNING] Some problems were encountered while building the effective model for org.apache.hadoop:hadoop-project:pom:2.4.1
+[WARNING] 'build.plugins.plugin.(groupId:artifactId)' must be unique but found duplicate declaration of plugin org.apache.maven.plugins:maven-enforcer-plugin @ line 1015, column 15
+[WARNING] 
+[WARNING] Some problems were encountered while building the effective model for org.apache.hadoop:hadoop-project-dist:pom:2.4.1
+[WARNING] 'build.plugins.plugin.(groupId:artifactId)' must be unique but found duplicate declaration of plugin org.apache.maven.plugins:maven-enforcer-plugin @ org.apache.hadoop:hadoop-project:2.4.1, /home/shen/project/hadoop-2.4.1-src/hadoop-project/pom.xml, line 1015, column 15
+[WARNING] 
+[WARNING] Some problems were encountered while building the effective model for org.apache.hadoop:hadoop-auth:jar:2.4.1
+[WARNING] 'dependencies.dependency.(groupId:artifactId:type:classifier)' must be unique: org.mortbay.jetty:jetty-util:jar -> duplicate declaration of version (?) @ line 60, column 17
+[WARNING] 
+[WARNING] Some problems were encountered while building the effective model for org.apache.hadoop:hadoop-common:jar:2.4.1
+[WARNING] 'build.plugins.plugin.(groupId:artifactId)' must be unique but found duplicate declaration of plugin org.apache.maven.plugins:maven-surefire-plugin @ line 479, column 15
+[WARNING] 
+[WARNING] It is highly recommended to fix these problems because they threaten the stability of your build.
+[WARNING] 
+[WARNING] For this reason, future Maven versions might no longer support building such malformed projects.
+[WARNING] 
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Build Order:
+[INFO] 
+[INFO] Apache Hadoop Main
+[INFO] Apache Hadoop Project POM
+[INFO] Apache Hadoop Annotations
+[INFO] Apache Hadoop Project Dist POM
+[INFO] Apache Hadoop Assemblies
+[INFO] Apache Hadoop Maven Plugins
+[INFO] Apache Hadoop MiniKDC
+[INFO] Apache Hadoop Auth
+[INFO] Apache Hadoop Auth Examples
+[INFO] Apache Hadoop Common
+[INFO] Apache Hadoop NFS
+[INFO] Apache Hadoop Common Project
+[INFO] Apache Hadoop HDFS
+[INFO] Apache Hadoop HttpFS
+[INFO] Apache Hadoop HDFS BookKeeper Journal
+[INFO] Apache Hadoop HDFS-NFS
+[INFO] Apache Hadoop HDFS Project
+[INFO] hadoop-yarn
+[INFO] hadoop-yarn-api
+[INFO] hadoop-yarn-common
+[INFO] hadoop-yarn-server
+[INFO] hadoop-yarn-server-common
+[INFO] hadoop-yarn-server-nodemanager
+[INFO] hadoop-yarn-server-web-proxy
+[INFO] hadoop-yarn-server-applicationhistoryservice
+[INFO] hadoop-yarn-server-resourcemanager
+[INFO] hadoop-yarn-server-tests
+[INFO] hadoop-yarn-client
+[INFO] hadoop-yarn-applications
+[INFO] hadoop-yarn-applications-distributedshell
+[INFO] hadoop-yarn-applications-unmanaged-am-launcher
+[INFO] hadoop-yarn-site
+[INFO] hadoop-yarn-project
+[INFO] hadoop-mapreduce-client
+[INFO] hadoop-mapreduce-client-core
+[INFO] hadoop-mapreduce-client-common
+[INFO] hadoop-mapreduce-client-shuffle
+[INFO] hadoop-mapreduce-client-app
+[INFO] hadoop-mapreduce-client-hs
+[INFO] hadoop-mapreduce-client-jobclient
+[INFO] hadoop-mapreduce-client-hs-plugins
+[INFO] Apache Hadoop MapReduce Examples
+[INFO] hadoop-mapreduce
+[INFO] Apache Hadoop MapReduce Streaming
+[INFO] Apache Hadoop Distributed Copy
+[INFO] Apache Hadoop Archives
+[INFO] Apache Hadoop Rumen
+[INFO] Apache Hadoop Gridmix
+[INFO] Apache Hadoop Data Join
+[INFO] Apache Hadoop Extras
+[INFO] Apache Hadoop Pipes
+[INFO] Apache Hadoop OpenStack support
+[INFO] Apache Hadoop Client
+[INFO] Apache Hadoop Mini-Cluster
+[INFO] Apache Hadoop Scheduler Load Simulator
+[INFO] Apache Hadoop Tools Dist
+[INFO] Apache Hadoop Tools
+[INFO] Apache Hadoop Distribution
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building Apache Hadoop Main 2.4.1
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-enforcer-plugin:1.3.1:enforce (default) @ hadoop-main ---
+[INFO] 
+[INFO] --- maven-site-plugin:3.3:attach-descriptor (attach-descriptor) @ hadoop-main ---
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building Apache Hadoop Project POM 2.4.1
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-antrun-plugin:1.7:run (create-testdirs) @ hadoop-project ---
+[INFO] Executing tasks
+
+main:
+[INFO] Executed tasks
+[INFO] 
+[INFO] --- maven-site-plugin:3.3:attach-descriptor (attach-descriptor) @ hadoop-project ---
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building Apache Hadoop Annotations 2.4.1
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-antrun-plugin:1.7:run (create-testdirs) @ hadoop-annotations ---
+[INFO] Executing tasks
+
+main:
+[INFO] Executed tasks
+[INFO] 
+[INFO] --- maven-resources-plugin:2.2:resources (default-resources) @ hadoop-annotations ---
+[INFO] Using default encoding to copy filtered resources.
+[INFO] 
+[INFO] --- maven-compiler-plugin:2.5.1:compile (default-compile) @ hadoop-annotations ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO] 
+[INFO] --- maven-resources-plugin:2.2:testResources (default-testResources) @ hadoop-annotations ---
+[INFO] Using default encoding to copy filtered resources.
+[INFO] 
+[INFO] --- maven-compiler-plugin:2.5.1:testCompile (default-testCompile) @ hadoop-annotations ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- maven-surefire-plugin:2.16:test (default-test) @ hadoop-annotations ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- maven-jar-plugin:2.3.1:jar (default-jar) @ hadoop-annotations ---
+[INFO] 
+[INFO] --- maven-site-plugin:3.3:attach-descriptor (attach-descriptor) @ hadoop-annotations ---
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building Apache Hadoop Project Dist POM 2.4.1
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-antrun-plugin:1.7:run (create-testdirs) @ hadoop-project-dist ---
+[INFO] Executing tasks
+
+main:
+[INFO] Executed tasks
+[INFO] 
+[INFO] --- maven-jar-plugin:2.3.1:jar (prepare-jar) @ hadoop-project-dist ---
+[WARNING] JAR will be empty - no content was marked for inclusion!
+[INFO] 
+[INFO] --- maven-jar-plugin:2.3.1:test-jar (prepare-test-jar) @ hadoop-project-dist ---
+[WARNING] JAR will be empty - no content was marked for inclusion!
+[INFO] 
+[INFO] >>> maven-source-plugin:2.1.2:jar (default) @ hadoop-project-dist >>>
+[INFO] 
+[INFO] --- maven-antrun-plugin:1.7:run (create-testdirs) @ hadoop-project-dist ---
+[INFO] Executing tasks
+
+main:
+[INFO] Executed tasks
+[INFO] 
+[INFO] <<< maven-source-plugin:2.1.2:jar (default) @ hadoop-project-dist <<<
+[INFO] 
+[INFO] --- maven-source-plugin:2.1.2:jar (default) @ hadoop-project-dist ---
+[INFO] 
+[INFO] >>> maven-source-plugin:2.1.2:test-jar (default) @ hadoop-project-dist >>>
+[INFO] 
+[INFO] --- maven-antrun-plugin:1.7:run (create-testdirs) @ hadoop-project-dist ---
+[INFO] Executing tasks
+
+main:
+[INFO] Executed tasks
+[INFO] 
+[INFO] <<< maven-source-plugin:2.1.2:test-jar (default) @ hadoop-project-dist <<<
+[INFO] 
+[INFO] --- maven-source-plugin:2.1.2:test-jar (default) @ hadoop-project-dist ---
+[INFO] 
+[INFO] --- maven-site-plugin:3.3:attach-descriptor (attach-descriptor) @ hadoop-project-dist ---
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building Apache Hadoop Assemblies 2.4.1
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-antrun-plugin:1.7:run (create-testdirs) @ hadoop-assemblies ---
+[INFO] Executing tasks
+
+main:
+[INFO] Executed tasks
+[INFO] 
+[INFO] --- maven-enforcer-plugin:1.3.1:enforce (default) @ hadoop-assemblies ---
+[INFO] 
+[INFO] --- maven-resources-plugin:2.2:resources (default-resources) @ hadoop-assemblies ---
+[INFO] Using default encoding to copy filtered resources.
+[INFO] 
+[INFO] --- maven-compiler-plugin:2.5.1:compile (default-compile) @ hadoop-assemblies ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- maven-resources-plugin:2.2:testResources (default-testResources) @ hadoop-assemblies ---
+[INFO] Using default encoding to copy filtered resources.
+[INFO] 
+[INFO] --- maven-compiler-plugin:2.5.1:testCompile (default-testCompile) @ hadoop-assemblies ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- maven-surefire-plugin:2.16:test (default-test) @ hadoop-assemblies ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- maven-jar-plugin:2.3.1:jar (default-jar) @ hadoop-assemblies ---
+[INFO] 
+[INFO] --- maven-site-plugin:3.3:attach-descriptor (attach-descriptor) @ hadoop-assemblies ---
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building Apache Hadoop Maven Plugins 2.4.1
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-antrun-plugin:1.7:run (create-testdirs) @ hadoop-maven-plugins ---
+[INFO] Executing tasks
+
+main:
+[INFO] Executed tasks
+[INFO] 
+[INFO] --- maven-plugin-plugin:3.0:descriptor (default-descriptor) @ hadoop-maven-plugins ---
+[INFO] Using 'UTF-8' encoding to read mojo metadata.
+[INFO] Applying mojo extractor for language: java-annotations
+[INFO] Mojo extractor for language: java-annotations found 2 mojo descriptors.
+[INFO] Applying mojo extractor for language: java
+[INFO] Mojo extractor for language: java found 0 mojo descriptors.
+[INFO] Applying mojo extractor for language: bsh
+[INFO] Mojo extractor for language: bsh found 0 mojo descriptors.
+[INFO] 
+[INFO] --- maven-resources-plugin:2.2:resources (default-resources) @ hadoop-maven-plugins ---
+[INFO] Using default encoding to copy filtered resources.
+[INFO] 
+[INFO] --- maven-compiler-plugin:2.5.1:compile (default-compile) @ hadoop-maven-plugins ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO] 
+[INFO] --- maven-plugin-plugin:3.0:descriptor (mojo-descriptor) @ hadoop-maven-plugins ---
+[INFO] Using 'UTF-8' encoding to read mojo metadata.
+[INFO] Applying mojo extractor for language: java-annotations
+[INFO] Mojo extractor for language: java-annotations found 2 mojo descriptors.
+[INFO] Applying mojo extractor for language: java
+[INFO] Mojo extractor for language: java found 0 mojo descriptors.
+[INFO] Applying mojo extractor for language: bsh
+[INFO] Mojo extractor for language: bsh found 0 mojo descriptors.
+[INFO] 
+[INFO] --- maven-resources-plugin:2.2:testResources (default-testResources) @ hadoop-maven-plugins ---
+[INFO] Using default encoding to copy filtered resources.
+[INFO] 
+[INFO] --- maven-compiler-plugin:2.5.1:testCompile (default-testCompile) @ hadoop-maven-plugins ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- maven-surefire-plugin:2.16:test (default-test) @ hadoop-maven-plugins ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- maven-jar-plugin:2.3.1:jar (default-jar) @ hadoop-maven-plugins ---
+[INFO] Building jar: /home/shen/project/hadoop-2.4.1-src/hadoop-maven-plugins/target/hadoop-maven-plugins-2.4.1.jar
+[INFO] 
+[INFO] --- maven-plugin-plugin:3.0:addPluginArtifactMetadata (default-addPluginArtifactMetadata) @ hadoop-maven-plugins ---
+[INFO] 
+[INFO] --- maven-site-plugin:3.3:attach-descriptor (attach-descriptor) @ hadoop-maven-plugins ---
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building Apache Hadoop MiniKDC 2.4.1
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-antrun-plugin:1.7:run (create-testdirs) @ hadoop-minikdc ---
+[INFO] Executing tasks
+
+main:
+[INFO] Executed tasks
+[INFO] 
+[INFO] --- maven-resources-plugin:2.2:resources (default-resources) @ hadoop-minikdc ---
+[INFO] Using default encoding to copy filtered resources.
+[INFO] 
+[INFO] --- maven-compiler-plugin:2.5.1:compile (default-compile) @ hadoop-minikdc ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO] 
+[INFO] --- maven-resources-plugin:2.2:testResources (default-testResources) @ hadoop-minikdc ---
+[INFO] Using default encoding to copy filtered resources.
+[INFO] 
+[INFO] --- maven-compiler-plugin:2.5.1:testCompile (default-testCompile) @ hadoop-minikdc ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO] 
+[INFO] --- maven-surefire-plugin:2.16:test (default-test) @ hadoop-minikdc ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- maven-jar-plugin:2.3.1:jar (default-jar) @ hadoop-minikdc ---
+[INFO] 
+[INFO] --- maven-site-plugin:3.3:attach-descriptor (attach-descriptor) @ hadoop-minikdc ---
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building Apache Hadoop Auth 2.4.1
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-antrun-plugin:1.7:run (create-testdirs) @ hadoop-auth ---
+[INFO] Executing tasks
+
+main:
+[INFO] Executed tasks
+[INFO] 
+[INFO] --- maven-resources-plugin:2.2:resources (default-resources) @ hadoop-auth ---
+[INFO] Using default encoding to copy filtered resources.
+[INFO] 
+[INFO] --- maven-compiler-plugin:2.5.1:compile (default-compile) @ hadoop-auth ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO] 
+[INFO] --- maven-resources-plugin:2.2:testResources (default-testResources) @ hadoop-auth ---
+[INFO] Using default encoding to copy filtered resources.
+[INFO] 
+[INFO] --- maven-compiler-plugin:2.5.1:testCompile (default-testCompile) @ hadoop-auth ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO] 
+[INFO] --- maven-surefire-plugin:2.16:test (default-test) @ hadoop-auth ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] >>> maven-source-plugin:2.1.2:jar (default) @ hadoop-auth >>>
+[INFO] 
+[INFO] --- maven-antrun-plugin:1.7:run (create-testdirs) @ hadoop-auth ---
+[INFO] Executing tasks
+
+main:
+[INFO] Executed tasks
+[INFO] 
+[INFO] <<< maven-source-plugin:2.1.2:jar (default) @ hadoop-auth <<<
+[INFO] 
+[INFO] --- maven-source-plugin:2.1.2:jar (default) @ hadoop-auth ---
+[INFO] 
+[INFO] --- maven-jar-plugin:2.3.1:jar (default-jar) @ hadoop-auth ---
+[INFO] 
+[INFO] --- maven-site-plugin:3.3:attach-descriptor (attach-descriptor) @ hadoop-auth ---
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building Apache Hadoop Auth Examples 2.4.1
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-antrun-plugin:1.7:run (create-testdirs) @ hadoop-auth-examples ---
+[INFO] Executing tasks
+
+main:
+[INFO] Executed tasks
+[INFO] 
+[INFO] --- maven-resources-plugin:2.2:resources (default-resources) @ hadoop-auth-examples ---
+[INFO] Using default encoding to copy filtered resources.
+[INFO] 
+[INFO] --- maven-compiler-plugin:2.5.1:compile (default-compile) @ hadoop-auth-examples ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO] 
+[INFO] --- maven-resources-plugin:2.2:testResources (default-testResources) @ hadoop-auth-examples ---
+[INFO] Using default encoding to copy filtered resources.
+[INFO] 
+[INFO] --- maven-compiler-plugin:2.5.1:testCompile (default-testCompile) @ hadoop-auth-examples ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- maven-surefire-plugin:2.16:test (default-test) @ hadoop-auth-examples ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- maven-war-plugin:2.1:war (default-war) @ hadoop-auth-examples ---
+[INFO] Packaging webapp
+[INFO] Assembling webapp [hadoop-auth-examples] in [/home/shen/project/hadoop-2.4.1-src/hadoop-common-project/hadoop-auth-examples/target/hadoop-auth-examples-2.4.1]
+[INFO] Processing war project
+[INFO] Copying webapp resources [/home/shen/project/hadoop-2.4.1-src/hadoop-common-project/hadoop-auth-examples/src/main/webapp]
+[INFO] Webapp assembled in [85 msecs]
+[INFO] Building war: /home/shen/project/hadoop-2.4.1-src/hadoop-common-project/hadoop-auth-examples/target/hadoop-auth-examples.war
+[INFO] WEB-INF/web.xml already added, skipping
+[INFO] 
+[INFO] --- maven-site-plugin:3.3:attach-descriptor (attach-descriptor) @ hadoop-auth-examples ---
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building Apache Hadoop Common 2.4.1
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-antrun-plugin:1.7:run (create-testdirs) @ hadoop-common ---
+[INFO] Executing tasks
+
+main:
+[INFO] Executed tasks
+[INFO] 
+[INFO] --- hadoop-maven-plugins:2.4.1:protoc (compile-protoc) @ hadoop-common ---
+[INFO] 
+[INFO] --- hadoop-maven-plugins:2.4.1:version-info (version-info) @ hadoop-common ---
+[WARNING] [svn, info] failed: java.io.IOException: Cannot run program "svn": error=2, No such file or directory
+[INFO] SCM: GIT
+[INFO] Computed MD5: e50c39df75991c93443d547a48ba27
+[INFO] 
+[INFO] --- maven-resources-plugin:2.2:resources (default-resources) @ hadoop-common ---
+[INFO] Using default encoding to copy filtered resources.
+[INFO] 
+[INFO] --- maven-compiler-plugin:2.5.1:compile (default-compile) @ hadoop-common ---
+[INFO] Compiling 13 source files to /home/shen/project/hadoop-2.4.1-src/hadoop-common-project/hadoop-common/target/classes
+[INFO] 
+[INFO] --- avro-maven-plugin:1.7.4:schema (generate-avro-test-sources) @ hadoop-common ---
+[INFO] 
+[INFO] --- hadoop-maven-plugins:2.4.1:protoc (compile-test-protoc) @ hadoop-common ---
+[INFO] 
+[INFO] --- maven-resources-plugin:2.2:testResources (default-testResources) @ hadoop-common ---
+[INFO] Using default encoding to copy filtered resources.
+[INFO] 
+[INFO] --- maven-antrun-plugin:1.7:run (create-log-dir) @ hadoop-common ---
+[INFO] Executing tasks
+
+main:
+   [delete] Deleting directory /home/shen/project/hadoop-2.4.1-src/hadoop-common-project/hadoop-common/target/test/data
+    [mkdir] Created dir: /home/shen/project/hadoop-2.4.1-src/hadoop-common-project/hadoop-common/target/test/data
+[INFO] Executed tasks
+[INFO] 
+[INFO] --- maven-antrun-plugin:1.7:run (copy-test-tarballs) @ hadoop-common ---
+[INFO] Executing tasks
+
+main:
+[INFO] Executed tasks
+[INFO] 
+[INFO] --- maven-compiler-plugin:2.5.1:testCompile (default-testCompile) @ hadoop-common ---
+[INFO] Compiling 2 source files to /home/shen/project/hadoop-2.4.1-src/hadoop-common-project/hadoop-common/target/test-classes
+[INFO] 
+[INFO] --- maven-surefire-plugin:2.16:test (default-test) @ hadoop-common ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- maven-jar-plugin:2.3.1:jar (prepare-jar) @ hadoop-common ---
+[INFO] Building jar: /home/shen/project/hadoop-2.4.1-src/hadoop-common-project/hadoop-common/target/hadoop-common-2.4.1.jar
+[INFO] 
+[INFO] --- maven-jar-plugin:2.3.1:test-jar (prepare-test-jar) @ hadoop-common ---
+[INFO] Building jar: /home/shen/project/hadoop-2.4.1-src/hadoop-common-project/hadoop-common/target/hadoop-common-2.4.1-tests.jar
+[INFO] 
+[INFO] >>> maven-source-plugin:2.1.2:jar (default) @ hadoop-common >>>
+[INFO] 
+[INFO] --- maven-antrun-plugin:1.7:run (create-testdirs) @ hadoop-common ---
+[INFO] Executing tasks
+
+main:
+[INFO] Executed tasks
+[INFO] 
+[INFO] --- hadoop-maven-plugins:2.4.1:protoc (compile-protoc) @ hadoop-common ---
+[INFO] 
+[INFO] <<< maven-source-plugin:2.1.2:jar (default) @ hadoop-common <<<
+[INFO] 
+[INFO] --- maven-source-plugin:2.1.2:jar (default) @ hadoop-common ---
+[INFO] org already added, skipping
+[INFO] org/apache already added, skipping
+[INFO] org/apache/hadoop already added, skipping
+[INFO] org/apache/hadoop/ha already added, skipping
+[INFO] org/apache/hadoop/security already added, skipping
+[INFO] org/apache/hadoop/ipc already added, skipping
+[INFO] org/apache/hadoop/ipc/protobuf already added, skipping
+[INFO] org/apache/hadoop/tools already added, skipping
+[INFO] org already added, skipping
+[INFO] org/apache already added, skipping
+[INFO] org/apache/hadoop already added, skipping
+[INFO] org/apache/hadoop/io already added, skipping
+[INFO] org/apache/hadoop/io/serializer already added, skipping
+[INFO] org/apache/hadoop/io/serializer/avro already added, skipping
+[INFO] org/apache/hadoop/ipc already added, skipping
+[INFO] org/apache/hadoop/ipc/protobuf already added, skipping
+[INFO] Building jar: /home/shen/project/hadoop-2.4.1-src/hadoop-common-project/hadoop-common/target/hadoop-common-2.4.1-sources.jar
+[INFO] org already added, skipping
+[INFO] org/apache already added, skipping
+[INFO] org/apache/hadoop already added, skipping
+[INFO] org/apache/hadoop/ha already added, skipping
+[INFO] org/apache/hadoop/security already added, skipping
+[INFO] org/apache/hadoop/ipc already added, skipping
+[INFO] org/apache/hadoop/ipc/protobuf already added, skipping
+[INFO] org/apache/hadoop/tools already added, skipping
+[INFO] org already added, skipping
+[INFO] org/apache already added, skipping
+[INFO] org/apache/hadoop already added, skipping
+[INFO] org/apache/hadoop/io already added, skipping
+[INFO] org/apache/hadoop/io/serializer already added, skipping
+[INFO] org/apache/hadoop/io/serializer/avro already added, skipping
+[INFO] org/apache/hadoop/ipc already added, skipping
+[INFO] org/apache/hadoop/ipc/protobuf already added, skipping
+[INFO] 
+[INFO] >>> maven-source-plugin:2.1.2:test-jar (default) @ hadoop-common >>>
+[INFO] 
+[INFO] --- maven-antrun-plugin:1.7:run (create-testdirs) @ hadoop-common ---
+[INFO] Executing tasks
+
+main:
+[INFO] Executed tasks
+[INFO] 
+[INFO] --- hadoop-maven-plugins:2.4.1:protoc (compile-protoc) @ hadoop-common ---
+[INFO] 
+[INFO] <<< maven-source-plugin:2.1.2:test-jar (default) @ hadoop-common <<<
+[INFO] 
+[INFO] --- maven-source-plugin:2.1.2:test-jar (default) @ hadoop-common ---
+[INFO] org already added, skipping
+[INFO] org/apache already added, skipping
+[INFO] org/apache/hadoop already added, skipping
+[INFO] org/apache/hadoop/io already added, skipping
+[INFO] org/apache/hadoop/io/serializer already added, skipping
+[INFO] org/apache/hadoop/io/serializer/avro already added, skipping
+[INFO] org/apache/hadoop/ipc already added, skipping
+[INFO] org/apache/hadoop/ipc/protobuf already added, skipping
+[INFO] Building jar: /home/shen/project/hadoop-2.4.1-src/hadoop-common-project/hadoop-common/target/hadoop-common-2.4.1-test-sources.jar
+[INFO] org already added, skipping
+[INFO] org/apache already added, skipping
+[INFO] org/apache/hadoop already added, skipping
+[INFO] org/apache/hadoop/io already added, skipping
+[INFO] org/apache/hadoop/io/serializer already added, skipping
+[INFO] org/apache/hadoop/io/serializer/avro already added, skipping
+[INFO] org/apache/hadoop/ipc already added, skipping
+[INFO] org/apache/hadoop/ipc/protobuf already added, skipping
+[INFO] 
+[INFO] --- maven-jar-plugin:2.3.1:jar (default-jar) @ hadoop-common ---
+[INFO] 
+[INFO] --- maven-site-plugin:3.3:attach-descriptor (attach-descriptor) @ hadoop-common ---
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building Apache Hadoop NFS 2.4.1
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-antrun-plugin:1.7:run (create-testdirs) @ hadoop-nfs ---
+[INFO] Executing tasks
+
+main:
+[INFO] Executed tasks
+[INFO] 
+[INFO] --- maven-resources-plugin:2.2:resources (default-resources) @ hadoop-nfs ---
+[INFO] Using default encoding to copy filtered resources.
+[INFO] 
+[INFO] --- maven-compiler-plugin:2.5.1:compile (default-compile) @ hadoop-nfs ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO] 
+[INFO] --- maven-resources-plugin:2.2:testResources (default-testResources) @ hadoop-nfs ---
+[INFO] Using default encoding to copy filtered resources.
+[INFO] 
+[INFO] --- maven-compiler-plugin:2.5.1:testCompile (default-testCompile) @ hadoop-nfs ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO] 
+[INFO] --- maven-surefire-plugin:2.16:test (default-test) @ hadoop-nfs ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- maven-jar-plugin:2.3.1:jar (default-jar) @ hadoop-nfs ---
+[INFO] 
+[INFO] --- maven-site-plugin:3.3:attach-descriptor (attach-descriptor) @ hadoop-nfs ---
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building Apache Hadoop Common Project 2.4.1
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-antrun-plugin:1.7:run (create-testdirs) @ hadoop-common-project ---
+[INFO] Executing tasks
+
+main:
+[INFO] Executed tasks
+[INFO] 
+[INFO] --- maven-site-plugin:3.3:attach-descriptor (attach-descriptor) @ hadoop-common-project ---
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building Apache Hadoop HDFS 2.4.1
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-antrun-plugin:1.7:run (create-testdirs) @ hadoop-hdfs ---
+[INFO] Executing tasks
+
+main:
+[INFO] Executed tasks
+[INFO] 
+[INFO] --- maven-antrun-plugin:1.7:run (create-jsp-generated-sources-directory) @ hadoop-hdfs ---
+[INFO] Executing tasks
+
+main:
+[INFO] Executed tasks
+[INFO] 
+[INFO] --- jspc-maven-plugin:2.0-alpha-3:compile (hdfs) @ hadoop-hdfs ---
+[WARNING] Compiled JSPs will not be added to the project and web.xml will not be modified, either because includeInProject is set to false or because the project's packaging is not 'war'.
+[INFO] Compiling 8 JSP source files to /home/shen/project/hadoop-2.4.1-src/hadoop-hdfs-project/hadoop-hdfs/target/generated-sources/java
+log4j:WARN No appenders could be found for logger (org.apache.jasper.JspC).
+log4j:WARN Please initialize the log4j system properly.
+WARN: The method class org.apache.commons.logging.impl.SLF4JLogFactory#release() was invoked.
+WARN: Please see http://www.slf4j.org/codes.html for an explanation.
+[INFO] Compiled completed in 0:00:00.186
+[INFO] 
+[INFO] --- jspc-maven-plugin:2.0-alpha-3:compile (secondary) @ hadoop-hdfs ---
+[WARNING] Compiled JSPs will not be added to the project and web.xml will not be modified, either because includeInProject is set to false or because the project's packaging is not 'war'.
+[INFO] Compiling 1 JSP source file to /home/shen/project/hadoop-2.4.1-src/hadoop-hdfs-project/hadoop-hdfs/target/generated-sources/java
+WARN: The method class org.apache.commons.logging.impl.SLF4JLogFactory#release() was invoked.
+WARN: Please see http://www.slf4j.org/codes.html for an explanation.
+[INFO] Compiled completed in 0:00:00.014
+[INFO] 
+[INFO] --- jspc-maven-plugin:2.0-alpha-3:compile (journal) @ hadoop-hdfs ---
+[WARNING] Compiled JSPs will not be added to the project and web.xml will not be modified, either because includeInProject is set to false or because the project's packaging is not 'war'.
+[INFO] Compiling 1 JSP source file to /home/shen/project/hadoop-2.4.1-src/hadoop-hdfs-project/hadoop-hdfs/target/generated-sources/java
+WARN: The method class org.apache.commons.logging.impl.SLF4JLogFactory#release() was invoked.
+WARN: Please see http://www.slf4j.org/codes.html for an explanation.
+[INFO] Compiled completed in 0:00:00.014
+[INFO] 
+[INFO] --- jspc-maven-plugin:2.0-alpha-3:compile (datanode) @ hadoop-hdfs ---
+[WARNING] Compiled JSPs will not be added to the project and web.xml will not be modified, either because includeInProject is set to false or because the project's packaging is not 'war'.
+[INFO] Compiling 4 JSP source files to /home/shen/project/hadoop-2.4.1-src/hadoop-hdfs-project/hadoop-hdfs/target/generated-sources/java
+WARN: The method class org.apache.commons.logging.impl.SLF4JLogFactory#release() was invoked.
+WARN: Please see http://www.slf4j.org/codes.html for an explanation.
+[INFO] Compiled completed in 0:00:00.014
+[INFO] 
+[INFO] --- build-helper-maven-plugin:1.5:add-source (add-jsp-generated-sources-directory) @ hadoop-hdfs ---
+[INFO] Source directory: /home/shen/project/hadoop-2.4.1-src/hadoop-hdfs-project/hadoop-hdfs/target/generated-sources/java added.
+[INFO] 
+[INFO] --- hadoop-maven-plugins:2.4.1:protoc (compile-protoc) @ hadoop-hdfs ---
+[INFO] 
+[INFO] --- hadoop-maven-plugins:2.4.1:protoc (compile-protoc-datanode) @ hadoop-hdfs ---
+[INFO] 
+[INFO] --- hadoop-maven-plugins:2.4.1:protoc (compile-protoc-namenode) @ hadoop-hdfs ---
+[WARNING] [protoc, --java_out=/home/shen/project/hadoop-2.4.1-src/hadoop-hdfs-project/hadoop-hdfs/target/generated-sources/java, -I/home/shen/project/hadoop-2.4.1-src/hadoop-common-project/hadoop-common/src/main/proto, -I/home/shen/project/hadoop-2.4.1-src/hadoop-hdfs-project/hadoop-hdfs/src/main/proto, /home/shen/project/hadoop-2.4.1-src/hadoop-hdfs-project/hadoop-hdfs/src/main/proto/acl.proto, /home/shen/project/hadoop-2.4.1-src/hadoop-hdfs-project/hadoop-hdfs/src/main/proto/NamenodeProtocol.proto, /home/shen/project/hadoop-2.4.1-src/hadoop-hdfs-project/hadoop-hdfs/src/main/proto/ClientNamenodeProtocol.proto] failed with error code 1
+[ERROR] protoc compiler error
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary:
+[INFO] 
+[INFO] Apache Hadoop Main ................................ SUCCESS [3.067s]
+[INFO] Apache Hadoop Project POM ......................... SUCCESS [0.784s]
+[INFO] Apache Hadoop Annotations ......................... SUCCESS [1.369s]
+[INFO] Apache Hadoop Project Dist POM .................... SUCCESS [0.825s]
+[INFO] Apache Hadoop Assemblies .......................... SUCCESS [0.290s]
+[INFO] Apache Hadoop Maven Plugins ....................... SUCCESS [1.985s]
+[INFO] Apache Hadoop MiniKDC ............................. SUCCESS [0.871s]
+[INFO] Apache Hadoop Auth ................................ SUCCESS [0.881s]
+[INFO] Apache Hadoop Auth Examples ....................... SUCCESS [0.815s]
+[INFO] Apache Hadoop Common .............................. SUCCESS [15.419s]
+[INFO] Apache Hadoop NFS ................................. SUCCESS [0.294s]
+[INFO] Apache Hadoop Common Project ...................... SUCCESS [0.098s]
+[INFO] Apache Hadoop HDFS ................................ FAILURE [2.131s]
+[INFO] Apache Hadoop HttpFS .............................. SKIPPED
+[INFO] Apache Hadoop HDFS BookKeeper Journal ............. SKIPPED
+[INFO] Apache Hadoop HDFS-NFS ............................ SKIPPED
+[INFO] Apache Hadoop HDFS Project ........................ SKIPPED
+[INFO] hadoop-yarn ....................................... SKIPPED
+[INFO] hadoop-yarn-api ................................... SKIPPED
+[INFO] hadoop-yarn-common ................................ SKIPPED
+[INFO] hadoop-yarn-server ................................ SKIPPED
+[INFO] hadoop-yarn-server-common ......................... SKIPPED
+[INFO] hadoop-yarn-server-nodemanager .................... SKIPPED
+[INFO] hadoop-yarn-server-web-proxy ...................... SKIPPED
+[INFO] hadoop-yarn-server-applicationhistoryservice ...... SKIPPED
+[INFO] hadoop-yarn-server-resourcemanager ................ SKIPPED
+[INFO] hadoop-yarn-server-tests .......................... SKIPPED
+[INFO] hadoop-yarn-client ................................ SKIPPED
+[INFO] hadoop-yarn-applications .......................... SKIPPED
+[INFO] hadoop-yarn-applications-distributedshell ......... SKIPPED
+[INFO] hadoop-yarn-applications-unmanaged-am-launcher .... SKIPPED
+[INFO] hadoop-yarn-site .................................. SKIPPED
+[INFO] hadoop-yarn-project ............................... SKIPPED
+[INFO] hadoop-mapreduce-client ........................... SKIPPED
+[INFO] hadoop-mapreduce-client-core ...................... SKIPPED
+[INFO] hadoop-mapreduce-client-common .................... SKIPPED
+[INFO] hadoop-mapreduce-client-shuffle ................... SKIPPED
+[INFO] hadoop-mapreduce-client-app ....................... SKIPPED
+[INFO] hadoop-mapreduce-client-hs ........................ SKIPPED
+[INFO] hadoop-mapreduce-client-jobclient ................. SKIPPED
+[INFO] hadoop-mapreduce-client-hs-plugins ................ SKIPPED
+[INFO] Apache Hadoop MapReduce Examples .................. SKIPPED
+[INFO] hadoop-mapreduce .................................. SKIPPED
+[INFO] Apache Hadoop MapReduce Streaming ................. SKIPPED
+[INFO] Apache Hadoop Distributed Copy .................... SKIPPED
+[INFO] Apache Hadoop Archives ............................ SKIPPED
+[INFO] Apache Hadoop Rumen ............................... SKIPPED
+[INFO] Apache Hadoop Gridmix ............................. SKIPPED
+[INFO] Apache Hadoop Data Join ........................... SKIPPED
+[INFO] Apache Hadoop Extras .............................. SKIPPED
+[INFO] Apache Hadoop Pipes ............................... SKIPPED
+[INFO] Apache Hadoop OpenStack support ................... SKIPPED
+[INFO] Apache Hadoop Client .............................. SKIPPED
+[INFO] Apache Hadoop Mini-Cluster ........................ SKIPPED
+[INFO] Apache Hadoop Scheduler Load Simulator ............ SKIPPED
+[INFO] Apache Hadoop Tools Dist .......................... SKIPPED
+[INFO] Apache Hadoop Tools ............................... SKIPPED
+[INFO] Apache Hadoop Distribution ........................ SKIPPED
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: 31.296s
+[INFO] Finished at: Thu Jul 17 15:35:33 EDT 2014
+[INFO] Final Memory: 49M/398M
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.hadoop:hadoop-maven-plugins:2.4.1:protoc (compile-protoc-namenode) on project hadoop-hdfs: org.apache.maven.plugin.MojoExecutionException: protoc failure -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoExecutionException
+[ERROR] 
+[ERROR] After correcting the problems, you can resume the build with the command
+[ERROR]   mvn <goals> -rf :hadoop-hdfs

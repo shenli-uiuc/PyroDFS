@@ -581,7 +581,8 @@ public abstract class FileSystem extends Configured implements Closeable {
    * Shen Li: split the src file into destA and destB
    * at the given offset reusing src's blocks
    */
-  public boolean split(Path src, Path destA, Path destB, 
+  public boolean splitFileReuseBlocks(Path src, 
+                       Path destA, Path destB, 
                        long splitPoint) throws IOException {
     // 1. check if src is valid
     // 2. create file for destA and destB

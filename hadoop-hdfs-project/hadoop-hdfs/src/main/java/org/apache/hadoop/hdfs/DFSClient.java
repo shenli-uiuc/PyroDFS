@@ -1718,6 +1718,14 @@ public class DFSClient implements java.io.Closeable, RemotePeerFactory {
   }
 
   /**
+   * Shen Li
+   */
+  public boolean splitFileReuseBlocks(String src, 
+         String destA, String destB, long splitOffset) throws IOException {
+    return namenode.splitFileReuseBlocks(src, destA, destB, splitOffset);
+  }
+
+  /**
    * Get a partial listing of the indicated directory
    * No block locations need to be fetched
    */

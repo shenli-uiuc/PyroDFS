@@ -569,13 +569,10 @@ class NameNodeRpcServer implements NamenodeProtocols {
   @Override
   public boolean splitFileReuseBlocks(String src, 
                        String destA, String destB,
-                       long srcFid, long destAFid, long destBFid,
-                       long splitOffset, String clientName) 
+                       long splitOffset) 
       throws IOException {
     return namesystem.splitFileReuseBlocks(src, 
-                            destA, destB, 
-                            srcFid, destAFid, destBFid,
-                            splitOffset, clientName);
+                            destA, destB, splitOffset);
   }
 
   @Override
