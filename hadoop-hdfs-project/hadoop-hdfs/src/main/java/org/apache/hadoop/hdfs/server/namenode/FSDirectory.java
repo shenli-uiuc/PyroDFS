@@ -478,9 +478,8 @@ public class FSDirectory implements Closeable {
   boolean splitFileReuseBlocks(String src,  INodeFile srcFileNode,
                                String destA, INodeFile destAFileNode,
                                String destB, INodeFile destBFileNode,
-                               BlockInfo [] blocks, int splitIndex) 
-      throws IOException {
-    // TODO: need to close dest files in some ancestor callers
+                               BlockInfo [] blocks, int splitIndex,
+                               boolean logRetryCache) throws IOException {
     Preconditions.checkArgument(destAFileNode.isUnderConstruction());
     Preconditions.checkArgument(destBFileNode.isUnderConstruction());
     waitForReady();
@@ -496,7 +495,37 @@ public class FSDirectory implements Closeable {
 
     writeLock();
     try {
-      // step 1: add all blocks into the new dest files
+      // step 1: delete src file meta
+      // record modification
+      final int latestSnapshot = srcIip.getLatestSnapshotId();
+      INode targetNode = srcIip.getLastINode();
+      targetNode = targetNode.recordModification(latestSnapshot);
+      srcIip.setLastINode(targetNode);
+
+      // Remove the node from the namespace
+      long removed = removeLastINode(srcIip);
+      if (removed < 0) {
+        NameNode.LOG.info("Shen Li: failed to remove " + src 
+            +  " in splitFileReuseBlocks");
+        return false;
+      }
+
+      // set the parent's modification time
+      final INodeDirectory parent = targetNode.getParent();
+      parent.updateModificationTime(now, latestSnapshot);
+    
+      fsImage.getEditLog()
+        .logDelete(src, now, logRetryCache);
+      incrDeletedFileCount(removed);
+      
+      if (removed == 0) {
+        NameNode.LOG.info("Shen Li: removed reference " + src
+            + ", but there are other references pointing the"
+            + " same original file");
+        return false;
+      }
+
+      // step 2: add all blocks into the new dest files
       destAFileNode.setBlocks(destABlocks);
       destBFileNode.setBlocks(destBBlocks);
       for (BlockInfo block: destABlocks) {
@@ -506,27 +535,9 @@ public class FSDirectory implements Closeable {
       for (BlockInfo block: destBBlocks) {
         getBlockManager().addBlockCollection(block, destBFileNode);
       }
+      // NOTE: persistBlocks is called in the direct caller 
+      // FSNamesystem
 
-      // step 2: delete src file meta
-      // record modification
-      final int latestSnapshot = srcIip.getLatestSnapshotId();
-      INode targetNode = srcIip.getLastINode();
-      targetNode = targetNode.recordModification(latestSnapshot);
-      srcIip.setLastINode(targetNode);
-
-      // Remove the node from the namespace
-      removeLastINode(srcIip);
-
-      // set the parent's modification time
-      final INodeDirectory parent = targetNode.getParent();
-      parent.updateModificationTime(now, latestSnapshot);
-    
-      // add logSplit TODO implement logSplit
-      // TODO: consider logRetryCache
-      fsImage.getEditLog()
-        .logDelete(src, now, false);
-      // TODO: should we incrSplitFileCount?
-      //incrDeletedFileCount(filesRemoved);
     } finally {
       writeUnlock();
     }

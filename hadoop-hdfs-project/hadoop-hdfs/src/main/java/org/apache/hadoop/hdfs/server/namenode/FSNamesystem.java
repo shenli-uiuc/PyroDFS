@@ -2737,14 +2737,15 @@ public class FSNamesystem implements Namesystem, FSClusterStats,
       // do split
       // [0, splitIndex) --> destA
       // [splitIndex, last] --> destB
-      // configure the first and the last block meta
-      // call dir.split() on all those blocks 
       // take a look at dir.persistNewBlock() to modify FSImage
       // all of the operations needs to be contained in dir.split()
       //
       // BlockInfo extends Block
+      boolean logCacheRetry = false;
       dir.splitFileReuseBlocks(src, srcFile, destA, destAFile, 
-                destB, destBFile, srcBlockInfos, splitIndex);
+                destB, destBFile, srcBlockInfos, splitIndex, logCacheRetry);
+      dir.persistBlocks(destA, destAFile, logCacheRetry);
+      dir.persistBlocks(destB, destBFile, logCacheRetry);
       leaseManager.removeLeaseWithPrefixPath(src);
     } finally {
       writeUnlock();

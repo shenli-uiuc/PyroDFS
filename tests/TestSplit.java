@@ -30,18 +30,24 @@ public class TestSplit {
       replicaGroups[0] = prefix + ":0";
       fdos.setReplicaGroups(replicaGroups);
       fdos.sealCurBlock();
+      // block 1
       String firstBlockStr = "test test before seal! " + input + "\n";
       br.write(firstBlockStr);
       br.flush();
       fdos.sealCurBlock();
       System.out.println("written " + firstBlockStr.length() + " bytes");
-      //replicaGroups[0] = prefix + ":1";
+      // block 2
+      br.write(firstBlockStr);
+      br.flush();
+      fdos.sealCurBlock();
+      System.out.println("written " + firstBlockStr.length() + " bytes");
+      //block 3
       fdos.setReplicaGroups(replicaGroups);
       br.write("after seal");
       br.close();
       Path destA = new Path(filePrefix + "destA");
       Path destB = new Path(filePrefix + "destB");
-      hdfs.splitFileReuseBlocks(file, destA, destB, firstBlockStr.length());
+      hdfs.splitFileReuseBlocks(file, destA, destB, firstBlockStr.length() * 2);
       hdfs.close();
     } catch (Exception e) {
       System.out.println(e.getMessage());
