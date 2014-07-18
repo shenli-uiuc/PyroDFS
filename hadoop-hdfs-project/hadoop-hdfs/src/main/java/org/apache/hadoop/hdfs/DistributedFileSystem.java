@@ -1933,9 +1933,12 @@ public class DistributedFileSystem extends FileSystem {
   public boolean splitFileReuseBlocks(Path src, 
                     Path destA, Path destB,
                     long splitPoint) throws IOException {
-    return dfs.splitFileReuseBlocks(getPathName(src),
-                                    getPathName(destA),
-                                    getPathName(destB),
-                                    splitPoint);
+    FsPermission fp = getFileStatus(src).getPermission();
+    create(this, destA, fp);
+    create(this, destB, fp);
+    return  dfs.splitFileReuseBlocks(getPathName(src),
+                                     getPathName(destA),
+                                     getPathName(destB),
+                                     splitPoint);
   }
 }

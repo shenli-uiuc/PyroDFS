@@ -484,13 +484,15 @@ public class FSDirectory implements Closeable {
     Preconditions.checkArgument(destAFileNode.isUnderConstruction());
     Preconditions.checkArgument(destBFileNode.isUnderConstruction());
     waitForReady();
-    long now = Now();
-    BlockInfos [] destABlocks = new BlockInfos[splitIndex];
-    BlockInfos [] destBBlocks = new BlockInfos[blocks.length - splitIndex];
+    long now = now();
+    BlockInfo [] destABlocks = new BlockInfo[splitIndex];
+    BlockInfo [] destBBlocks = new BlockInfo[blocks.length - splitIndex];
      
     System.arraycopy(blocks, 0, destABlocks, 0, destABlocks.length);
     System.arraycopy(blocks, destABlocks.length, 
                      destBBlocks, 0, destBBlocks.length);
+
+    INodesInPath srcIip = getINodesInPath4Write(src);
 
     writeLock();
     try {
@@ -517,17 +519,18 @@ public class FSDirectory implements Closeable {
 
       // set the parent's modification time
       final INodeDirectory parent = targetNode.getParent();
-      parent.updateModificationTime(mtime, latestSnapshot);
+      parent.updateModificationTime(now, latestSnapshot);
     
       // add logSplit TODO implement logSplit
+      // TODO: consider logRetryCache
       fsImage.getEditLog()
-        .logSplitFileReuseBlocks(src, destA, destB, now, logRetryCache);
+        .logDelete(src, now, false);
       // TODO: should we incrSplitFileCount?
       //incrDeletedFileCount(filesRemoved);
     } finally {
       writeUnlock();
     }
-    return false;
+    return true;
   }
 
   /**
