@@ -575,6 +575,15 @@ class NameNodeRpcServer implements NamenodeProtocols {
                             destA, destB, splitOffset);
   }
 
+  /**
+   * Shen Li: get server hostname where the given replica group is
+   * hosted
+   */
+  @Override
+  public String getReplicaGroupLocation(String rgId) throws IOException {
+    return namesystem.getBlockManager().getReplicaGroupLocation(rgId); 
+  }
+
   @Override
   public LocatedBlock addBlock(String src, String clientName,
       ExtendedBlock previous, DatanodeInfo[] excludedNodes, long fileId,

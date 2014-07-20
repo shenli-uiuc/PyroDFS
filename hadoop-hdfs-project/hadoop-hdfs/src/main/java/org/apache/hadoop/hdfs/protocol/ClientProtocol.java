@@ -359,6 +359,12 @@ public interface ClientProtocol {
                        String destA, String destB,
                        long splitOffset) throws IOException;
 
+  /**
+   * Shen Li: get the server hostname where the block is hosted
+   */
+  @Idempotent
+  public String getReplicaGroupLocation(String rgId) throws IOException;
+
   /** 
    * Get a datanode for an existing pipeline.
    * 

@@ -1435,6 +1435,15 @@ public class BlockManager {
                         blocksize, favoredNodes, null);
   }
 
+
+  /**
+   * Shen Li: get the server hostname where the given replica group
+   * is hosted
+   */
+  public String getReplicaGroupLocation(String rgId) throws IOException {
+    return blockplacement.getReplicaGroupLocation(rgId);
+  }
+
   /**
    * Shen Li: add parameter for replica group
    */

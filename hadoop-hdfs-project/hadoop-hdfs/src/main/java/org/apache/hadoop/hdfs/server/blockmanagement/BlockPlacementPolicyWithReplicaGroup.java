@@ -257,4 +257,11 @@ extends BlockPlacementPolicyDefault {
                                        existingReplicas, moreExistingReplicas);
   }
 
+  @Override
+  public String getReplicaGroupLocation(String rgId) {
+    LOG.info("Shen Li: recieve getReplicaGroupLocation call in "
+             + "BlockPlacementPolicyWithReplicaGroup instance");
+    return rgManager.getReplicaGroupLocation(rgId);
+  }
+
 }

@@ -1187,6 +1187,16 @@ public class DFSClient implements java.io.Closeable, RemotePeerFactory {
     }
     return hdfsLocations;
   }
+
+  /**
+   * Shen Li: get the server hostname where the given replica group
+   * is hosted
+   *
+   * @return hostname
+   */
+  public String getReplicaGroupLocation(String rgId) throws IOException {
+    return namenode.getReplicaGroupLocation(rgId);
+  }
   
   /**
    * Get block location information about a list of {@link HdfsBlockLocation}.

@@ -143,6 +143,7 @@ import org.apache.hadoop.hdfs.protocol.proto.ClientNamenodeProtocolProtos.Update
 import org.apache.hadoop.hdfs.protocol.proto.ClientNamenodeProtocolProtos.UpdatePipelineRequestProto;
 //Shen Li
 import org.apache.hadoop.hdfs.protocol.proto.ClientNamenodeProtocolProtos.SplitFileReuseBlocksRequestProto;
+import org.apache.hadoop.hdfs.protocol.proto.ClientNamenodeProtocolProtos.GetReplicaGroupLocationRequestProto;
 
 import org.apache.hadoop.hdfs.security.token.block.DataEncryptionKey;
 import org.apache.hadoop.hdfs.security.token.delegation.DelegationTokenIdentifier;
@@ -373,6 +374,22 @@ public class ClientNamenodeProtocolTranslatorPB implements
         .build();
     try {
       return rpcProxy.splitFileReuseBlocks(null, req).getResult();
+    } catch (ServiceException e) {
+      throw ProtobufHelper.getRemoteException(e);
+    }
+  }
+
+  /**
+   * Shen Li:
+   */
+  @Override
+  public String getReplicaGroupLocation(String rgId) throws IOException {
+    GetReplicaGroupLocationRequestProto req =
+      GetReplicaGroupLocationRequestProto.newBuilder()
+      .setRgId(rgId)
+      .build();
+    try {
+      return rpcProxy.getReplicaGroupLocation(null, req).getLocation();
     } catch (ServiceException e) {
       throw ProtobufHelper.getRemoteException(e);
     }

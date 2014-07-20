@@ -217,6 +217,17 @@ message SplitFileReuseBlocksResponseProto {
   required bool result = 1;
 }
 
+// Shen Li: get server hostname where the given
+// replica group is hosted
+message GetReplicaGroupLocationRequestProto {
+  required string rgId = 1;
+}
+
+// Shen Li:
+message GetReplicaGroupLocationResponseProto {
+  required string location = 1;
+}
+
 message MkdirsRequestProto {
   required string src = 1;
   required FsPermissionProto masked = 2;
@@ -676,6 +687,9 @@ service ClientNamenodeProtocol {
   // Shen Li
   rpc splitFileReuseBlocks(SplitFileReuseBlocksRequestProto) 
                    returns(SplitFileReuseBlocksResponseProto);
+  // Shen Li
+  rpc getReplicaGroupLocation(GetReplicaGroupLocationRequestProto)
+                      returns(GetReplicaGroupLocationResponseProto);
   rpc mkdirs(MkdirsRequestProto) returns(MkdirsResponseProto);
   rpc getListing(GetListingRequestProto) returns(GetListingResponseProto);
   rpc renewLease(RenewLeaseRequestProto) returns(RenewLeaseResponseProto);

@@ -37,6 +37,8 @@ public class TestSeal {
       fdos.setReplicaGroups(replicaGroups);
       br.write("after seal");
       br.close();
+      System.out.println("Replica group " + replicaGroups[0] + " is stored on "
+                         + hdfs.getReplicaGroupLocation(replicaGroups[0]));
       hdfs.close();
     } catch (Exception e) {
       System.out.println(e.getMessage());

@@ -100,6 +100,15 @@ public abstract class BlockPlacementPolicy {
   }
 
   /**
+   * Shen Li:
+   */
+  String getReplicaGroupLocation(String rgId) {
+    throw new IllegalStateException("Shen Li: the method"
+        + " getReplicaGroupLocation(String) has to be called" 
+        + " on a BlockPlacementPolicyWithReplicaGroup instance");
+  }
+
+  /**
    * Shen Li: add parameter replicaGroup. The functionality are expected
    * to be provided by the implementations of this class.
    */

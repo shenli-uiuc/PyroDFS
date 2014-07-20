@@ -226,6 +226,17 @@ public class DistributedFileSystem extends FileSystem {
   }
 
   /**
+   * Shen Li: get the server hostname where the replica group is stored
+   *
+   * @return    hostname
+   */
+  @Override
+  public String getReplicaGroupLocation(String rgId) throws IOException {
+    statistics.incrementReadOps(1);
+    return dfs.getReplicaGroupLocation(rgId);
+  }
+
+  /**
    * Used to query storage location information for a list of blocks. This list
    * of blocks is normally constructed via a series of calls to
    * {@link DistributedFileSystem#getFileBlockLocations(Path, long, long)} to

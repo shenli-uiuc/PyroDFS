@@ -77,6 +77,8 @@ import org.apache.hadoop.hdfs.protocol.proto.ClientNamenodeProtocolProtos.Delete
 //Shen Li
 import org.apache.hadoop.hdfs.protocol.proto.ClientNamenodeProtocolProtos.SplitFileReuseBlocksRequestProto;
 import org.apache.hadoop.hdfs.protocol.proto.ClientNamenodeProtocolProtos.SplitFileReuseBlocksResponseProto;
+import org.apache.hadoop.hdfs.protocol.proto.ClientNamenodeProtocolProtos.GetReplicaGroupLocationRequestProto;
+import org.apache.hadoop.hdfs.protocol.proto.ClientNamenodeProtocolProtos.GetReplicaGroupLocationResponseProto;
 
 import org.apache.hadoop.hdfs.protocol.proto.ClientNamenodeProtocolProtos.DeleteSnapshotRequestProto;
 import org.apache.hadoop.hdfs.protocol.proto.ClientNamenodeProtocolProtos.DeleteSnapshotResponseProto;
@@ -561,6 +563,23 @@ public class ClientNamenodeProtocolServerSideTranslatorPB implements
                                 req.getSplitOffset());
       return SplitFileReuseBlocksResponseProto.newBuilder()
              .setResult(result).build();
+    } catch (IOException e) {
+      throw new ServiceException(e);
+    }
+  }
+
+  /**
+   * Shen Li
+   */
+  @Override
+  public GetReplicaGroupLocationResponseProto
+  getReplicaGroupLocation(RpcController controller,
+                          GetReplicaGroupLocationRequestProto req)
+      throws ServiceException {
+    try {
+      String location = server.getReplicaGroupLocation(req.getRgId());
+      return GetReplicaGroupLocationResponseProto.newBuilder()
+             .setLocation(location).build();
     } catch (IOException e) {
       throw new ServiceException(e);
     }

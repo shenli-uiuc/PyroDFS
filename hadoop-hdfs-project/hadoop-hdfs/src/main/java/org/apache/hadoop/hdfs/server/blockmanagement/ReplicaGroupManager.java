@@ -78,4 +78,19 @@ public class ReplicaGroupManager {
     return false;
   }
 
+  public static
+  String getReplicaGroupLocation(String groupStr) {
+    int groupType = checkGroupType(groupStr);
+    if (PRIMARY_GROUP == groupType || EXCLUSIVE_GROUP == groupType) {
+      DatanodeStorageInfo dnsi = null;
+      synchronized (rGroup2Dns) {
+        dnsi = rGroup2Dns.get(groupStr);
+      }
+      if (null != dnsi) {
+        return dnsi.getDatanodeDescriptor().getHostName();
+      }
+    }
+    return null;
+  }
+
 }
