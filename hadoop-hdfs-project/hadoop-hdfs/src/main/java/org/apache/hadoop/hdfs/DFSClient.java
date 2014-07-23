@@ -1194,8 +1194,9 @@ public class DFSClient implements java.io.Closeable, RemotePeerFactory {
    *
    * @return hostname
    */
-  public String getReplicaGroupLocation(String rgId) throws IOException {
-    return namenode.getReplicaGroupLocation(rgId);
+  public String getReplicaGroupLocation(String rgNamespace, String rgId) 
+  throws IOException {
+    return namenode.getReplicaGroupLocation(rgNamespace, rgId);
   }
   
   /**

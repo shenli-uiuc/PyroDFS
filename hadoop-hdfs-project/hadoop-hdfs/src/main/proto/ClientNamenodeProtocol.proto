@@ -129,7 +129,8 @@ message AddBlockRequestProto {
   repeated DatanodeInfoProto excludeNodes = 4;
   optional uint64 fileId = 5 [default = 0];  // default as a bogus id
   repeated string favoredNodes = 6; //the set of datanodes to use for the block
-  repeated string replicaGroups = 7; // Shen Li: replication groups
+  optional string replicaNamespace = 7;
+  repeated string replicaGroups = 8; // Shen Li: replication groups
 }
 
 message AddBlockResponseProto {
@@ -220,7 +221,8 @@ message SplitFileReuseBlocksResponseProto {
 // Shen Li: get server hostname where the given
 // replica group is hosted
 message GetReplicaGroupLocationRequestProto {
-  required string rgId = 1;
+  required string rgNamespace = 1;
+  required string rgId = 2;
 }
 
 // Shen Li:

@@ -231,9 +231,10 @@ public class DistributedFileSystem extends FileSystem {
    * @return    hostname
    */
   @Override
-  public String getReplicaGroupLocation(String rgId) throws IOException {
+  public String getReplicaGroupLocation(String rgNamespace, String rgId) 
+  throws IOException {
     statistics.incrementReadOps(1);
-    return dfs.getReplicaGroupLocation(rgId);
+    return dfs.getReplicaGroupLocation(rgNamespace, rgId);
   }
 
   /**

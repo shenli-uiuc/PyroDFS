@@ -580,8 +580,10 @@ class NameNodeRpcServer implements NamenodeProtocols {
    * hosted
    */
   @Override
-  public String getReplicaGroupLocation(String rgId) throws IOException {
-    return namesystem.getBlockManager().getReplicaGroupLocation(rgId); 
+  public String getReplicaGroupLocation(String rgNamespace,
+                                        String rgId) throws IOException {
+    return namesystem.getBlockManager()
+           .getReplicaGroupLocation(rgNamespace, rgId); 
   }
 
   @Override
@@ -590,14 +592,15 @@ class NameNodeRpcServer implements NamenodeProtocols {
       String[] favoredNodes)
       throws IOException {
     return addBlock(src, clientName, previous, excludedNodes, fileId,
-                    favoredNodes, null);
+                    favoredNodes, null, null);
   }
 
-  // Shen Li: add parameter replicaGroups. 
+  // Shen Li: add parameter replicaNamespace and replicaGroups. 
   @Override
   public LocatedBlock addBlock(String src, String clientName, 
       ExtendedBlock previous, DatanodeInfo[] excludedNodes, long fileId,
-      String[] favoredNodes, String[] replicaGroups) throws IOException {
+      String[] favoredNodes, String replicaNamespace, 
+      String[] replicaGroups) throws IOException {
     if (stateChangeLog.isDebugEnabled()) {
       stateChangeLog.debug("*BLOCK* NameNode.addBlock: file " + src
           + " fileId=" + fileId + " for " + clientName);
@@ -615,7 +618,7 @@ class NameNodeRpcServer implements NamenodeProtocols {
         : Arrays.asList(replicaGroups);
     LocatedBlock locatedBlock = namesystem.getAdditionalBlock(src, fileId,
         clientName, previous, excludedNodesSet, favoredNodesList, 
-        replicaGroupsList);
+        replicaNamespace, replicaGroupsList);
     if (locatedBlock != null)
       metrics.incrAddBlockOps();
     return locatedBlock;

@@ -346,7 +346,8 @@ public interface ClientProtocol {
   @Idempotent
   public LocatedBlock addBlock(String src, String clientName,
       ExtendedBlock previous, DatanodeInfo[] excludeNodes, long fileId,
-      String[] favoredNodes, String[] replicaGroups) 
+      String[] favoredNodes, String replicaNamespace, 
+      String[] replicaGroups) 
       throws AccessControlException, FileNotFoundException,
              NotReplicatedYetException, SafeModeException,
              UnresolvedLinkException, IOException;
@@ -363,7 +364,8 @@ public interface ClientProtocol {
    * Shen Li: get the server hostname where the block is hosted
    */
   @Idempotent
-  public String getReplicaGroupLocation(String rgId) throws IOException;
+  public String getReplicaGroupLocation(String rgNamespace, String rgId) 
+  throws IOException;
 
   /** 
    * Get a datanode for an existing pipeline.

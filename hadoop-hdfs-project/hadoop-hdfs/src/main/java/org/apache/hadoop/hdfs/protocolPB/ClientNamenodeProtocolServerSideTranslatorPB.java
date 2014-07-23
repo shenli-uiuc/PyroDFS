@@ -436,6 +436,9 @@ public class ClientNamenodeProtocolServerSideTranslatorPB implements
     return VOID_ADD_BLOCK_RESPONSE;
   }
 
+  /**
+   * Shen Li: add replicaNamespace, and replicaGroups
+   */
   @Override
   public AddBlockResponseProto addBlock(RpcController controller,
       AddBlockRequestProto req) throws ServiceException {
@@ -443,6 +446,7 @@ public class ClientNamenodeProtocolServerSideTranslatorPB implements
     try {
       List<DatanodeInfoProto> excl = req.getExcludeNodesList();
       List<String> favor = req.getFavoredNodesList();
+      String namespace = req.getReplicaNamespace();
       List<String> groups = req.getReplicaGroupsList();
       LocatedBlock result = server.addBlock(
           req.getSrc(),
@@ -452,6 +456,7 @@ public class ClientNamenodeProtocolServerSideTranslatorPB implements
               .toArray(new DatanodeInfoProto[excl.size()])), req.getFileId(),
           (favor == null || favor.size() == 0) ? null : favor
               .toArray(new String[favor.size()]),
+          namespace,
           (groups== null || groups.size()== 0) ? null : groups
               .toArray(new String[groups.size()]));
       return AddBlockResponseProto.newBuilder()
@@ -577,7 +582,9 @@ public class ClientNamenodeProtocolServerSideTranslatorPB implements
                           GetReplicaGroupLocationRequestProto req)
       throws ServiceException {
     try {
-      String location = server.getReplicaGroupLocation(req.getRgId());
+      String location = 
+        server.getReplicaGroupLocation(req.getRgNamespace(), 
+                                       req.getRgId());
       return GetReplicaGroupLocationResponseProto.newBuilder()
              .setLocation(location).build();
     } catch (IOException e) {

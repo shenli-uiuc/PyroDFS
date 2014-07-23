@@ -1432,7 +1432,7 @@ public class BlockManager {
       final Set<Node> excludedNodes,
       final long blocksize, List<String> favoredNodes) throws IOException {
     return chooseTarget(src, numOfReplicas, client, excludedNodes,
-                        blocksize, favoredNodes, null);
+                        blocksize, favoredNodes, null, null);
   }
 
 
@@ -1440,8 +1440,9 @@ public class BlockManager {
    * Shen Li: get the server hostname where the given replica group
    * is hosted
    */
-  public String getReplicaGroupLocation(String rgId) throws IOException {
-    return blockplacement.getReplicaGroupLocation(rgId);
+  public String getReplicaGroupLocation(String rgNamespace, String rgId) 
+  throws IOException {
+    return blockplacement.getReplicaGroupLocation(rgNamespace, rgId);
   }
 
   /**
@@ -1451,14 +1452,15 @@ public class BlockManager {
       final int numOfReplicas, final DatanodeDescriptor client,
       final Set<Node> excludedNodes,
       final long blocksize, List<String> favoredNodes,
-      List<String> replicaGroups) throws IOException {
+      final String replicaNamespace, List<String> replicaGroups) 
+  throws IOException {
     List<DatanodeDescriptor> favoredDatanodeDescriptors = 
         getDatanodeDescriptors(favoredNodes);
     final DatanodeStorageInfo[] targets = blockplacement.chooseTarget(src,
         numOfReplicas, client, excludedNodes, blocksize, 
         // TODO: get storage type from file
         favoredDatanodeDescriptors, StorageType.DEFAULT,
-        replicaGroups);
+        replicaNamespace, replicaGroups);
     if (targets.length < minReplication) {
       throw new IOException("File " + src + " could only be replicated to "
           + targets.length + " nodes instead of minReplication (="

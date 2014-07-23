@@ -18,18 +18,28 @@ public class ReplicaGroupManager {
   public static final int RANDOM_GROUP = 3;
   // A temporary implementation to keep the mapping from 
   // replica group to Datanode storage info
-  protected static TreeMap<String, DatanodeStorageInfo> rGroup2Dns =
-               new TreeMap<String, DatanodeStorageInfo> ();
+  protected static 
+      TreeMap<String, TreeMap<String, DatanodeStorageInfo> > 
+      rGroup2Dns =
+  new TreeMap<String, TreeMap<String, DatanodeStorageInfo> > ();
 
   protected static TreeMap<String, Set<Node> > excludeNodes = 
                new TreeMap<String, Set<Node> > ();
+
   public ReplicaGroupManager() {
     //TODO: load data from disk if necessary
   }
 
-  public static DatanodeStorageInfo get(String groupStr) {
+  public static DatanodeStorageInfo get(String namespace, 
+                                        String groupStr) {
     synchronized (rGroup2Dns) {
-      return rGroup2Dns.get(groupStr);
+      TreeMap<String, DatanodeStorageInfo> map = 
+        rGroup2Dns.get(namespace);
+      if (null == map) {
+        return null;
+      } else {
+        return map.get(groupStr);
+      }
     }
   }
 
@@ -50,41 +60,49 @@ public class ReplicaGroupManager {
     }
   }
 
-  public static Set<Node> getExcludeNodes(String groupStr) {
-    String prefix = ReplicaGroupUtil.getPrefix(groupStr);
+  public static Set<Node> getExcludeNodes(String namespace) {
     synchronized (excludeNodes) {
-      return excludeNodes.get(prefix);  
+      return excludeNodes.get(namespace);  
     }
   }
 
   public static 
-  boolean addDnsiIfNecessary(String groupStr, 
+  boolean addDnsiIfNecessary(String namespace, String groupStr, 
                              DatanodeStorageInfo dnsi) {
     int groupType = checkGroupType(groupStr);
-    synchronized (rGroup2Dns) {
-      if ((PRIMARY_GROUP == groupType || EXCLUSIVE_GROUP == groupType)
-          && null == rGroup2Dns.get(groupStr)) {
-        rGroup2Dns.put(groupStr, dnsi);
-        String prefix = ReplicaGroupUtil.getPrefix(groupStr);
-        synchronized (excludeNodes) {
-          if (null == excludeNodes.get(prefix)) {
-            excludeNodes.put(prefix, new TreeSet<Node> ());
-          }
-          excludeNodes.get(prefix).add(dnsi.getDatanodeDescriptor());
+    if ((PRIMARY_GROUP == groupType || EXCLUSIVE_GROUP == groupType)) {
+      synchronized (rGroup2Dns) {
+        TreeMap<String, DatanodeStorageInfo> map = rGroup2Dns.get(namespace);
+        if (null == map) {
+          map = new TreeMap<String, DatanodeStorageInfo> ();
+          rGroup2Dns.put(namespace, map);
         }
-        return true;
+        if (null == map.get(groupStr)) {
+          map.put(groupStr, dnsi);
+          synchronized (excludeNodes) {
+            if (null == excludeNodes.get(namespace)) {
+              excludeNodes.put(namespace, new TreeSet<Node> ());
+            }
+            excludeNodes.get(namespace).add(dnsi.getDatanodeDescriptor());
+          }
+        }
       }
+      return true;
     }
     return false;
   }
 
   public static
-  String getReplicaGroupLocation(String groupStr) {
+  String getReplicaGroupLocation(String namespace, String groupStr) {
     int groupType = checkGroupType(groupStr);
     if (PRIMARY_GROUP == groupType || EXCLUSIVE_GROUP == groupType) {
       DatanodeStorageInfo dnsi = null;
+      TreeMap<String, DatanodeStorageInfo> map = null;
       synchronized (rGroup2Dns) {
-        dnsi = rGroup2Dns.get(groupStr);
+        map = rGroup2Dns.get(namespace);
+        if (null != map) {
+          dnsi = map.get(groupStr);
+        }
       }
       if (null != dnsi) {
         return dnsi.getDatanodeDescriptor().getHostName();

@@ -355,6 +355,7 @@ public class DFSOutputStream extends FSOutputSummer
     // Shen Li: replicaGroups, passed to namenode.addBlock() in
     // DataStreamer.locateFollowingBlock().
     private String[] replicaGroups;
+    private String replicaNamespace;
 
     volatile boolean hasError = false;
     volatile int errorIndex = -1;
@@ -450,7 +451,9 @@ public class DFSOutputStream extends FSOutputSummer
       this.favoredNodes = favoredNodes;
     }
 
-    private void setReplicaGroups(String[] replicaGroups) {
+    private void setReplicaGroups(String replicaNamespace, 
+                                  String[] replicaGroups) {
+      this.replicaNamespace = replicaNamespace;
       this.replicaGroups = replicaGroups;
     }
 
@@ -1469,7 +1472,8 @@ public class DFSOutputStream extends FSOutputSummer
         while (true) {
           try {
             return dfsClient.namenode.addBlock(src, dfsClient.clientName,
-                block, excludedNodes, fileId, favoredNodes, replicaGroups);
+                block, excludedNodes, fileId, favoredNodes, 
+                replicaNamespace, replicaGroups);
           } catch (RemoteException e) {
             IOException ue = 
               e.unwrapRemoteException(FileNotFoundException.class,
@@ -1741,8 +1745,9 @@ public class DFSOutputStream extends FSOutputSummer
    * Shen Li: set the replica groups for the next block
    * to be written.
    */
-  public synchronized void setReplicaGroups(String[] replicaGroups) {
-    streamer.setReplicaGroups(replicaGroups); 
+  public synchronized void setReplicaGroups(String replicaNamespace,
+                                            String[] replicaGroups) {
+    streamer.setReplicaGroups(replicaNamespace, replicaGroups); 
   }
 
   // Shen Li: a chunk is not a block, it can be any size, usually the buffer size

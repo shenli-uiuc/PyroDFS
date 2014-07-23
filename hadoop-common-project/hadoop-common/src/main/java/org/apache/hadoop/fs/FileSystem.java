@@ -698,10 +698,13 @@ public abstract class FileSystem extends Configured implements Closeable {
    * Shen Li: get replica group location, overrided in
    * DistributedFileSystem
    */
-  public String getReplicaGroupLocation(String rgId) throws IOException {
+  public String getReplicaGroupLocation(String rgNamespace,
+                                        String rgId) 
+  throws IOException {
     throw new IllegalStateException("Shen Li: method "
         + "getReplicaGroupLocation has to be called on a "
-        + "DistributedFileSystem object");
+        + "DistributedFileSystem object: "
+        + rgNamespace + ", " + rgId);
   }
 
  

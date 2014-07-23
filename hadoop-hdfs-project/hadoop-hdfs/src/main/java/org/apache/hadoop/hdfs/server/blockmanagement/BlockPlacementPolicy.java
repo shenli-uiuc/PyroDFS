@@ -102,10 +102,11 @@ public abstract class BlockPlacementPolicy {
   /**
    * Shen Li:
    */
-  String getReplicaGroupLocation(String rgId) {
+  String getReplicaGroupLocation(String rgNamespace, String rgId) {
     throw new IllegalStateException("Shen Li: the method"
         + " getReplicaGroupLocation(String) has to be called" 
-        + " on a BlockPlacementPolicyWithReplicaGroup instance");
+        + " on a BlockPlacementPolicyWithReplicaGroup instance: "
+        + rgNamespace + ", " + rgId);
   }
 
   /**
@@ -117,7 +118,8 @@ public abstract class BlockPlacementPolicy {
       Set<Node> excludedNodes,
       long blocksize,
       List<DatanodeDescriptor> favoredNodes,
-      StorageType storageType, List<String> replicaGroups) {
+      StorageType storageType, String replicaNamespace, 
+      List<String> replicaGroups) {
     return chooseTarget(src, numOfReplicas, writer, excludedNodes,
                  blocksize, favoredNodes, storageType);
   }

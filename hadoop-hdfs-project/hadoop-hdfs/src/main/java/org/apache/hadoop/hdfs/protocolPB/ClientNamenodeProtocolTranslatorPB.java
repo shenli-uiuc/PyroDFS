@@ -353,7 +353,7 @@ public class ClientNamenodeProtocolTranslatorPB implements
       NotReplicatedYetException, SafeModeException, UnresolvedLinkException,
       IOException {
     return addBlock(src, clientName, previous, excludeNodes, fileId,
-                    favoredNodes, null);
+                    favoredNodes, null, null);
   }
 
   /**
@@ -383,9 +383,11 @@ public class ClientNamenodeProtocolTranslatorPB implements
    * Shen Li:
    */
   @Override
-  public String getReplicaGroupLocation(String rgId) throws IOException {
+  public String getReplicaGroupLocation(String rgNamespace, String rgId) 
+  throws IOException {
     GetReplicaGroupLocationRequestProto req =
       GetReplicaGroupLocationRequestProto.newBuilder()
+      .setRgNamespace(rgNamespace)
       .setRgId(rgId)
       .build();
     try {
@@ -401,12 +403,15 @@ public class ClientNamenodeProtocolTranslatorPB implements
   @Override
   public LocatedBlock addBlock(String src, String clientName, 
       ExtendedBlock previous, DatanodeInfo[] excludeNodes, long fileId,
-      String[] favoredNodes, String[] replicaGroups)
+      String[] favoredNodes, String replicaNamespace,
+      String[] replicaGroups)
       throws AccessControlException, FileNotFoundException,
              NotReplicatedYetException, SafeModeException, 
              UnresolvedLinkException, IOException {
+    // Shen Li: add replicaNamespace
     AddBlockRequestProto.Builder req = AddBlockRequestProto.newBuilder()
-        .setSrc(src).setClientName(clientName).setFileId(fileId);
+        .setSrc(src).setClientName(clientName).setFileId(fileId)
+        .setReplicaNamespace(replicaNamespace);
     if (previous != null) 
       req.setPrevious(PBHelper.convert(previous)); 
     if (excludeNodes != null) 

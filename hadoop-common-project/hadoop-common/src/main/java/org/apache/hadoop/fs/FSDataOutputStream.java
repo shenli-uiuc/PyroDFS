@@ -162,10 +162,12 @@ public class FSDataOutputStream extends DataOutputStream
   /**
    * Shen Li: set the replicaGroups for the next block to be written
    */
-  public void setReplicaGroups(String[] replicaGroups) {
+  public void setReplicaGroups(String replicaNamespace, 
+                               String[] replicaGroups) {
     // functionality is implemented in HdfsDataOutputStream.
     throw new IllegalStateException("Shen Li: method "
         + "setReplicaGroups should only be called on a "
-        + "HdfsDataOutputStream instance");
+        + "HdfsDataOutputStream instance: "
+        + replicaNamespace);
   }
 }

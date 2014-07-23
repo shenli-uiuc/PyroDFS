@@ -89,8 +89,9 @@ public class HdfsDataOutputStream extends FSDataOutputStream {
    * Shen Li: implementation of setReplicaGroups
    */
   @Override
-  public void setReplicaGroups(String[] replicaGroups) {
+  public void setReplicaGroups(String replicaNamespace, 
+                               String[] replicaGroups) {
     DFSOutputStream out = (DFSOutputStream)getWrappedStream();
-    out.setReplicaGroups(replicaGroups);
+    out.setReplicaGroups(replicaNamespace, replicaGroups);
   }
 }

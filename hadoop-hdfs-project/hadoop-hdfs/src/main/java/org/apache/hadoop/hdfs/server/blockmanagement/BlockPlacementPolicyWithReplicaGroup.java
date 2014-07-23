@@ -88,6 +88,7 @@ extends BlockPlacementPolicyDefault {
                                     long blockSize,
                                     List<DatanodeDescriptor> favoredNodes,
                                     StorageType storageType,
+                                    String replicaNamespace,
                                     List<String> replicaGroups) {
     // numOfReplicas is set for the file, which has to agree with 
     // the number of replicaGroups
@@ -97,7 +98,8 @@ extends BlockPlacementPolicyDefault {
       for (String replicaGroup : replicaGroups)
         strGroups += (replicaGroup + ", ");
     }
-    LOG.info("Shen Li: replicaGroups " + strGroups);
+    LOG.info("Shen Li: replicaNamespace " + replicaNamespace
+             + ", replicaGroups " + strGroups);
     if (null != replicaGroups && replicaGroups.size() > 0 
         && null == excludeNodes) { // does not handle failure node for now
       if (replicaGroups.size() != numOfReplicas) {
@@ -107,7 +109,7 @@ extends BlockPlacementPolicyDefault {
       }
       try {
         return chooseTarget(srcPath,  writer, excludeNodes, blockSize, 
-                            storageType, replicaGroups);
+                            storageType, replicaNamespace, replicaGroups);
       } catch (NotEnoughReplicasException ex) {
         LOG.info("Shen Li: in chooseTarget 3, not enough replica exception"
                  + ", fall back to default: " + ex.getMessage());
@@ -141,6 +143,7 @@ extends BlockPlacementPolicyDefault {
                                     Set<Node> excludeNodes,
                                     long blockSize,
                                     StorageType storageType,
+                                    String replicaNamespace,
                                     List<String> replicaGroups) 
       throws NotEnoughReplicasException {
     // the caller guarantees that the replica number of the file
@@ -164,7 +167,8 @@ extends BlockPlacementPolicyDefault {
           continue;
         }
         LOG.info("Shen Li: before rgManager.get()");
-        DatanodeStorageInfo dnsi = rgManager.get(replicaGroup);
+        DatanodeStorageInfo dnsi = rgManager.get(replicaNamespace,
+                                                 replicaGroup);
         if (null == dnsi) {
           LOG.info("Shen Li: replicaGroup " + replicaGroup 
               + " returns null dnsi");
@@ -175,7 +179,7 @@ extends BlockPlacementPolicyDefault {
           //       respected by the balancer
           int groupType = rgManager.checkGroupType(replicaGroup);
          
-          excludeNodes = rgManager.getExcludeNodes(replicaGroup);
+          excludeNodes = rgManager.getExcludeNodes(replicaNamespace);
           LOG.info("Shen Li: replicaGroup get exlucdeNodes "
               + excludeNodes);
           if (null == excludeNodes) {
@@ -205,7 +209,7 @@ extends BlockPlacementPolicyDefault {
                      + replicaGroup + " of file " + srcPath);
             continue;
           }
-          rgManager.addDnsiIfNecessary(replicaGroup, dnsi);
+          rgManager.addDnsiIfNecessary(replicaNamespace, replicaGroup, dnsi);
         } else {
           // existing mapping 
           results.add(dnsi);
@@ -258,10 +262,10 @@ extends BlockPlacementPolicyDefault {
   }
 
   @Override
-  public String getReplicaGroupLocation(String rgId) {
+  public String getReplicaGroupLocation(String namespace, String rgId) {
     LOG.info("Shen Li: recieve getReplicaGroupLocation call in "
              + "BlockPlacementPolicyWithReplicaGroup instance");
-    return rgManager.getReplicaGroupLocation(rgId);
+    return rgManager.getReplicaGroupLocation(namespace, rgId);
   }
 
 }
