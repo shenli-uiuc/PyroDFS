@@ -27,18 +27,20 @@ public class TestSeal {
       BufferedWriter br = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
       String prefix = "hbase:text/test_seal.txt";
       String[] replicaGroups = new String[1];
-      replicaGroups[0] = prefix + ":0";
-      fdos.setReplicaGroups(replicaGroups);
+      String replicaNamespace = "test_region";
+      replicaGroups[0] = "0";
+      fdos.setReplicaGroups(replicaNamespace, replicaGroups);
       fdos.sealCurBlock();
       br.write("test test before seal! " + input + "\n");
       br.flush();
       fdos.sealCurBlock();
       //replicaGroups[0] = prefix + ":1";
-      fdos.setReplicaGroups(replicaGroups);
+      fdos.setReplicaGroups(replicaNamespace, replicaGroups);
       br.write("after seal");
       br.close();
       System.out.println("Replica group " + replicaGroups[0] + " is stored on "
-                         + hdfs.getReplicaGroupLocation(replicaGroups[0]));
+                         + hdfs.getReplicaGroupLocation(replicaNamespace, 
+                                                        replicaGroups[0]));
       hdfs.close();
     } catch (Exception e) {
       System.out.println(e.getMessage());
