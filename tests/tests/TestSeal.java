@@ -41,6 +41,8 @@ public class TestSeal {
       System.out.println("Replica group " + replicaGroups[0] + " is stored on "
                          + hdfs.getReplicaGroupLocation(replicaNamespace, 
                                                         replicaGroups[0]));
+      System.out.println("Get replica group location: " 
+          + hdfs.getReplicaGroupLocation(replicaNamespace, replicaGroups[0]));
       hdfs.close();
     } catch (Exception e) {
       System.out.println(e.getMessage());

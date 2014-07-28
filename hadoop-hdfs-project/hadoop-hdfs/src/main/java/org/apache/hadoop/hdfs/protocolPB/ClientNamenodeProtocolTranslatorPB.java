@@ -385,6 +385,10 @@ public class ClientNamenodeProtocolTranslatorPB implements
   @Override
   public String getReplicaGroupLocation(String rgNamespace, String rgId) 
   throws IOException {
+    if (null == rgNamespace || null == rgId) {
+      throw new IllegalStateException("Shen Li: got rgNamespace = "
+          + rgNamespace + ", rgId = " + rgId + ", in TranslatorPB");
+    }
     GetReplicaGroupLocationRequestProto req =
       GetReplicaGroupLocationRequestProto.newBuilder()
       .setRgNamespace(rgNamespace)
@@ -410,8 +414,7 @@ public class ClientNamenodeProtocolTranslatorPB implements
              UnresolvedLinkException, IOException {
     // Shen Li: add replicaNamespace
     AddBlockRequestProto.Builder req = AddBlockRequestProto.newBuilder()
-        .setSrc(src).setClientName(clientName).setFileId(fileId)
-        .setReplicaNamespace(replicaNamespace);
+        .setSrc(src).setClientName(clientName).setFileId(fileId);
     if (previous != null) 
       req.setPrevious(PBHelper.convert(previous)); 
     if (excludeNodes != null) 
@@ -423,6 +426,8 @@ public class ClientNamenodeProtocolTranslatorPB implements
     if (replicaGroups != null) {
       req.addAllReplicaGroups(Arrays.asList(replicaGroups));
     }
+    if (null != replicaNamespace)
+      req.setReplicaNamespace(replicaNamespace);
     try {
       return PBHelper.convert(rpcProxy.addBlock(null, req.build()).getBlock());
     } catch (ServiceException e) {

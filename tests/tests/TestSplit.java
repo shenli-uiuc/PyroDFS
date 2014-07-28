@@ -27,8 +27,8 @@ public class TestSplit {
       BufferedWriter br = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
       String prefix = "hbase:text/test_seal.txt";
       String[] replicaGroups = new String[1];
-      replicaGroups[0] = prefix + ":0";
-      fdos.setReplicaGroups(replicaGroups);
+      replicaGroups[0] = "0";
+      fdos.setReplicaGroups(prefix, replicaGroups);
       fdos.sealCurBlock();
       // block 1
       String firstBlockStr = "test test before seal! " + input + "\n";
@@ -42,7 +42,7 @@ public class TestSplit {
       fdos.sealCurBlock();
       System.out.println("written " + firstBlockStr.length() + " bytes");
       //block 3
-      fdos.setReplicaGroups(replicaGroups);
+      fdos.setReplicaGroups(prefix, replicaGroups);
       br.write("after seal");
       br.close();
       Path destA = new Path(filePrefix + "destA");

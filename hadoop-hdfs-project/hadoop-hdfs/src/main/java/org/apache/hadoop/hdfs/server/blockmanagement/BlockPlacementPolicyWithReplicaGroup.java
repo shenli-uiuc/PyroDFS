@@ -102,13 +102,14 @@ extends BlockPlacementPolicyDefault {
              + ", replicaGroups " + strGroups);
     if (null != replicaGroups && replicaGroups.size() > 0 
         && null == excludeNodes) { // does not handle failure node for now
-      if (replicaGroups.size() != numOfReplicas) {
+      if (replicaGroups.size() > numOfReplicas) {
         throw new IllegalStateException("Shen Li: file replica number "
-            + numOfReplicas + "does not agree with number of "
+            + numOfReplicas + " is smaller than the number of "
             + "replicaGroups " + replicaGroups.size());
       }
       try {
-        return chooseTarget(srcPath,  writer, excludeNodes, blockSize, 
+        return chooseTarget(srcPath,  numOfReplicas, writer, excludeNodes, 
+                            blockSize, 
                             storageType, replicaNamespace, replicaGroups);
       } catch (NotEnoughReplicasException ex) {
         LOG.info("Shen Li: in chooseTarget 3, not enough replica exception"
@@ -139,6 +140,7 @@ extends BlockPlacementPolicyDefault {
    * servers. randomly place group with negtive ids
    */
   private DatanodeStorageInfo[] chooseTarget(String srcPath,
+                                    int numOfReplicas, // TODO: handle
                                     Node writer,
                                     Set<Node> excludeNodes,
                                     long blockSize,
@@ -223,14 +225,12 @@ extends BlockPlacementPolicyDefault {
       }
     }
 
-    if (chosenReplicaNum < replicaGroups.size()) {
-      String details = "chosen: " + chosenReplicaNum
-                       + ", required: " + replicaGroups.size() 
-                       + ". Details: ";
-      for (String replicaGroup : replicaGroups) {
-        details += (replicaGroup + ", ");
+    if (chosenReplicaNum < numOfReplicas) {
+      for (int i = chosenReplicaNum; i < numOfReplicas; ++i) {
+        results.add(chooseRandom(NodeBase.ROOT, excludeNodes, blockSize,
+                                 maxNodesPerRack, results, avoidStaleNodes,
+                                 storageType));
       }
-      throw new NotEnoughReplicasException(details);
     }
 
     return getPipeline(writer,

@@ -1,0 +1,3 @@
+1. update_tar.sh pushes the tar.gz file onto tareka05
+2. untar it and run pssh_setup_all.sh in the scripts folder will setup the hdfs
+3. run pssh_reboot_all.sh PASSWORD will reboot all slave and master machines
