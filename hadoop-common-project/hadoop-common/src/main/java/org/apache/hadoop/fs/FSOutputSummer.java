@@ -60,6 +60,12 @@ abstract public class FSOutputSummer extends OutputStream {
    */
   protected void writeChunk(byte[] b, int offset, int len, 
       byte[] checksum, boolean seal) throws IOException {
+    if (!seal) {
+      writeChunk(b, offset, len, checksum);
+    } else {
+      throw new IllegalStateException("Shen Li: writeChunk() with "
+          + "seal set to true cannot be called on FSOutputSummer");
+    }
   }
 
   /**

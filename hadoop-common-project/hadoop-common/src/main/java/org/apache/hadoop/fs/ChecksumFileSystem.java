@@ -440,10 +440,12 @@ public abstract class ChecksumFileSystem extends FilterFileSystem {
     }
     final FSDataOutputStream out;
     if (writeChecksum) {
+      System.out.println("Shen Li: yes writeChecksum--");
       out = new FSDataOutputStream(
           new ChecksumFSOutputSummer(this, f, overwrite, bufferSize, replication,
               blockSize, progress), null);
     } else {
+      System.out.println("Shen Li: no writeChecksum--");
       out = fs.create(f, permission, overwrite, bufferSize, replication,
           blockSize, progress);
       // remove the checksum file since we aren't writing one
