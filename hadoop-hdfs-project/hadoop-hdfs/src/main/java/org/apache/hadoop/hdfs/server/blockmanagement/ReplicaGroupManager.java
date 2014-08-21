@@ -61,14 +61,25 @@ public class ReplicaGroupManager {
   }
 
   public static Set<Node> getExcludeNodes(String namespace) {
+    Set<Node> ret = new TreeSet<Node> ();
     synchronized (excludeNodes) {
-      return excludeNodes.get(namespace);  
+      Set<Node> res = excludeNodes.get(namespace);
+      if (null != res) {
+        ret.addAll(res);
+      } else {
+        return null;
+      }
     }
+    return ret;
   }
 
   public static 
   boolean addDnsiIfNecessary(String namespace, String groupStr, 
                              DatanodeStorageInfo dnsi) {
+    BlockPlacementPolicy.LOG.info("Shen Li: in " +
+        " ReplicaGroupManager.addDnsiIfNecessary() " + 
+        ", namespace = " + namespace + ", groupStr = " + groupStr +
+        ", dnsi = " + dnsi);
     int groupType = checkGroupType(groupStr);
     if ((PRIMARY_GROUP == groupType || EXCLUSIVE_GROUP == groupType)) {
       synchronized (rGroup2Dns) {
@@ -89,11 +100,15 @@ public class ReplicaGroupManager {
       }
       return true;
     }
+    BlockPlacementPolicy.LOG.info("Shen Li: ReplicaGroupManager.add failed");
     return false;
   }
 
   public static
   String getReplicaGroupLocation(String namespace, String groupStr) {
+    BlockPlacementPolicy.LOG.info("Shen Li: in " +
+        " ReplicaGroupManager.getReplicaGroupLocation() " + 
+        ", namespace = " + namespace + ", groupStr = " + groupStr);
     int groupType = checkGroupType(groupStr);
     if (PRIMARY_GROUP == groupType || EXCLUSIVE_GROUP == groupType) {
       DatanodeStorageInfo dnsi = null;
@@ -108,6 +123,7 @@ public class ReplicaGroupManager {
         return dnsi.getDatanodeDescriptor().getHostName();
       }
     }
+    BlockPlacementPolicy.LOG.info("Shen Li: ReplicaGroupManager get return null");
     return null;
   }
 
