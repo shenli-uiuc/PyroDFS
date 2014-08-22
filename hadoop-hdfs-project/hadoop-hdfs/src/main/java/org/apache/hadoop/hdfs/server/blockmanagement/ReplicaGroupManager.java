@@ -30,6 +30,14 @@ public class ReplicaGroupManager {
     //TODO: load data from disk if necessary
   }
 
+  /**
+   * Assign each group a DNSI 
+   */
+  public static boolean initNamespace(String namespace, 
+                                      String [] groups) {
+    return true;
+  }
+
   public static DatanodeStorageInfo get(String namespace, 
                                         String groupStr) {
     synchronized (rGroup2Dns) {

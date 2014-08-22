@@ -220,6 +220,7 @@ extends BlockPlacementPolicyDefault {
         } else {
           // existing mapping 
           results.add(dnsi);
+          dfsExcludeNodes.add(dnsi.getDatanodeDescriptor());
         }
 
         LOG.info("Shen Li: chosen node is " + dnsi);
@@ -232,11 +233,15 @@ extends BlockPlacementPolicyDefault {
       }
     }
 
+    LOG.info("Shen Li: chosenReplicaNum = " + chosenReplicaNum 
+        + ", numOfReplicas = " + numOfReplicas + ", results size = "
+        + results.size());
     if (chosenReplicaNum < numOfReplicas) {
       for (int i = chosenReplicaNum; i < numOfReplicas; ++i) {
-        results.add(chooseRandom(NodeBase.ROOT, dfsExcludeNodes, blockSize,
-                                 maxNodesPerRack, results, avoidStaleNodes,
-                                 storageType));
+        chooseRandom(NodeBase.ROOT, dfsExcludeNodes, blockSize,
+                     maxNodesPerRack, results, avoidStaleNodes,
+                     storageType);
+        LOG.info("Shen Li: add one more dnsi = " + results.get(results.size() - 1));
       }
     }
 

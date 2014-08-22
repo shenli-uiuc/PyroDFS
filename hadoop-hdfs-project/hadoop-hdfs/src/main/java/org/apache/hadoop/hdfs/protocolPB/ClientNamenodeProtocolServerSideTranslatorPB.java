@@ -585,8 +585,12 @@ public class ClientNamenodeProtocolServerSideTranslatorPB implements
       String location = 
         server.getReplicaGroupLocation(req.getRgNamespace(), 
                                        req.getRgId());
-      return GetReplicaGroupLocationResponseProto.newBuilder()
-             .setLocation(location).build();
+      if (null != location) {
+        return GetReplicaGroupLocationResponseProto.newBuilder()
+               .setLocation(location).build();
+      } else {
+        return GetReplicaGroupLocationResponseProto.newBuilder().build();
+      }
     } catch (IOException e) {
       throw new ServiceException(e);
     }
