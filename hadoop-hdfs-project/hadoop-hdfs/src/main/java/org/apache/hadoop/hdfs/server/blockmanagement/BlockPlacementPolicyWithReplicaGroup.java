@@ -92,7 +92,7 @@ extends BlockPlacementPolicyDefault {
                                     List<String> replicaGroups) {
     // numOfReplicas is set for the file, which has to agree with 
     // the number of replicaGroups
-    LOG.info("Shen Li: in chooseTarget 3");
+    LOG.info("Shen Li: in chooseTarget 3, numOfReplicas = " + numOfReplicas);
     String strGroups = "";
     if (null != replicaGroups) {
       for (String replicaGroup : replicaGroups)
@@ -163,11 +163,9 @@ extends BlockPlacementPolicyDefault {
     final List<DatanodeStorageInfo> results = 
       new ArrayList<DatanodeStorageInfo>();
     Set<Node> excludeNodes = null;
-    Set<Node> randomExcludeNodes = new TreeSet<Node> ();
     if (null == dfsExcludeNodes) {
       dfsExcludeNodes = new TreeSet<Node> ();
     }
-    randomExcludeNodes.addAll(dfsExcludeNodes);
     for (String replicaGroup : replicaGroups) {
       try {
         if (null == replicaGroup) {
@@ -192,8 +190,6 @@ extends BlockPlacementPolicyDefault {
               chooseLocalStorage(writer, dfsExcludeNodes, blockSize,
                                  maxNodesPerRack, results, avoidStaleNodes, 
                                  storageType);
-            // local node already added into dfsExcludeNodes 
-            randomExcludeNodes.add(dnsi.getDatanodeDescriptor());
           } else if (rgManager.EXCLUSIVE_GROUP == groupType){
             excludeNodes = rgManager.getExcludeNodes(replicaNamespace);
             LOG.info("Shen Li: replicaGroup get exlucdeNodes "
@@ -208,10 +204,10 @@ extends BlockPlacementPolicyDefault {
             dnsi = chooseRandom(NodeBase.ROOT, excludeNodes, blockSize, 
                                 maxNodesPerRack, results, avoidStaleNodes, 
                                 storageType);
-            randomExcludeNodes.add(dnsi.getDatanodeDescriptor());
+            dfsExcludeNodes.add(dnsi.getDatanodeDescriptor());
           } else {
             // do not care about RANDOM_GROUP
-            dnsi = chooseRandom(NodeBase.ROOT, randomExcludeNodes, blockSize,
+            dnsi = chooseRandom(NodeBase.ROOT, dfsExcludeNodes, blockSize,
                                 maxNodesPerRack, results, avoidStaleNodes,
                                 storageType);
           }
@@ -226,6 +222,8 @@ extends BlockPlacementPolicyDefault {
           results.add(dnsi);
         }
 
+        LOG.info("Shen Li: chosen node is " + dnsi);
+
         ++chosenReplicaNum;
       } catch (IllegalStateException e) {
         LOG.error("Shen Li: error decoding replica group id from "
@@ -236,11 +234,18 @@ extends BlockPlacementPolicyDefault {
 
     if (chosenReplicaNum < numOfReplicas) {
       for (int i = chosenReplicaNum; i < numOfReplicas; ++i) {
-        results.add(chooseRandom(NodeBase.ROOT, randomExcludeNodes, blockSize,
+        results.add(chooseRandom(NodeBase.ROOT, dfsExcludeNodes, blockSize,
                                  maxNodesPerRack, results, avoidStaleNodes,
                                  storageType));
       }
     }
+
+    String msg = "";
+
+    for (DatanodeStorageInfo dnsi : results) {
+      msg = msg + dnsi;
+    }
+    LOG.info("Shen Li: chooseTarget result is " + msg);
 
     return getPipeline(writer,
         results.toArray(new DatanodeStorageInfo[results.size()]));
