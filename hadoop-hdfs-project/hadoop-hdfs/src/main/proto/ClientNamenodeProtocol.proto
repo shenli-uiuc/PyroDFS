@@ -230,6 +230,21 @@ message GetReplicaGroupLocationResponseProto {
   required string location = 1;
 }
 
+// Shen Li:
+message InitReplicaGroupsRequestProto {
+  required string src = 1;
+  required string clientName = 2;
+  repeated DatanodeInfoProto excludeNodes = 3;
+  optional uint64 fileId = 4 [default = 0];  // default as a bogus id
+  optional string replicaNamespace = 5;
+  repeated string replicaGroups = 6; // Shen Li: replication groups
+}
+
+// Shen Li:
+message InitReplicaGroupsResponseProto {
+  required uint32 allocatedNum = 1 [default = 0];
+}
+
 message MkdirsRequestProto {
   required string src = 1;
   required FsPermissionProto masked = 2;

@@ -2664,6 +2664,35 @@ public class FSNamesystem implements Namesystem, FSClusterStats,
                               excludedNodes, favoredNodes, null, null);
   }
 
+
+  /**
+   * Shen Li:
+   */
+  public int initReplicaGroups(String src, long fileId, String clientName,
+      excludedNodesSet, replicaNamespace, replicaGroups) throws IOException {
+  
+    checkOperation(OperationCategory.READ);
+    byte[][] pathComponents = FSDirectory.getPathComponentsForReservedPath(src);
+    readLock();
+    try {
+      checkOperation(OperationCategory.READ);
+      src = FSDirectory.resolvePath(src, pathComponents, dir);
+      LocatedBlock[] onRetryBlock = new LocatedBlock[1];
+      final INode[] inodes = analyzeFileState(
+          src, fileId, clientName, previous, onRetryBlock).getINodes();
+      final INodeFile pendingFile = inodes[inodes.length - 1].asFile();
+
+      long blockSize = pendingFile.getPreferredBlockSize();
+    } finally {
+      readUnlock();
+    }
+
+    // choose targets for the new block to be allocated.
+    return getBlockManager().initReplicaGroups(src, excludedNodesSet, 
+              blockSize, replicaNamespace, replicaGroups);
+      
+  }
+
   /**
    * Shen Li: split a file src into two files destA and destB reusing 
    * existing blocks

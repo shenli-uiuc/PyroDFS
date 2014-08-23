@@ -79,6 +79,8 @@ import org.apache.hadoop.hdfs.protocol.proto.ClientNamenodeProtocolProtos.SplitF
 import org.apache.hadoop.hdfs.protocol.proto.ClientNamenodeProtocolProtos.SplitFileReuseBlocksResponseProto;
 import org.apache.hadoop.hdfs.protocol.proto.ClientNamenodeProtocolProtos.GetReplicaGroupLocationRequestProto;
 import org.apache.hadoop.hdfs.protocol.proto.ClientNamenodeProtocolProtos.GetReplicaGroupLocationResponseProto;
+import org.apache.hadoop.hdfs.protocol.proto.ClientNamenodeProtocolProtos.InitReplicaGroupsRequestProto;
+import org.apache.hadoop.hdfs.protocol.proto.ClientNamenodeProtocolProtos.InitReplicaGroupsResponseProto;
 
 import org.apache.hadoop.hdfs.protocol.proto.ClientNamenodeProtocolProtos.DeleteSnapshotRequestProto;
 import org.apache.hadoop.hdfs.protocol.proto.ClientNamenodeProtocolProtos.DeleteSnapshotResponseProto;
@@ -593,6 +595,21 @@ public class ClientNamenodeProtocolServerSideTranslatorPB implements
       }
     } catch (IOException e) {
       throw new ServiceException(e);
+    }
+  }
+
+  /**
+   * Shen Li
+   */
+  @Override
+  public InitReplicaGroupsResponseProto
+  initReplicaGroups(RpcController controller,
+                    InitReplicaGroupsRequestProto req)
+      throws ServiceException {
+    try {
+      int allocated =
+        server.initReplicaGroups();
+      //TODO
     }
   }
 

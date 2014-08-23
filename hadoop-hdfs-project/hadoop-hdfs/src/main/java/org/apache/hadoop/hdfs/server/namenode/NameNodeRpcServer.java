@@ -586,6 +586,29 @@ class NameNodeRpcServer implements NamenodeProtocols {
            .getReplicaGroupLocation(rgNamespace, rgId); 
   }
 
+  /**
+   * Shen Li: init file replica group to DNSI mapping
+   *
+   * return the number of assigned exclusive replica groups
+   */
+  @override
+  public int initReplicaGroups(String src, String clientName,
+      DatanodeInfo[] excludedNodes, long fileId,
+      String replicaNamespace, String[] replicaGroups) throws IOException {
+    Set<Node> excludedNodesSet = null;
+    if (excludedNodes != null) {
+      excludedNodesSet = new HashSet<Node>(excludedNodes.length);
+      for (Node node : excludedNodes) {
+        excludedNodesSet.add(node);
+      }
+    }
+
+    List<String> replicaGroupsList = (replicaGroups == null) ? null
+        : Arrays.asList(replicaGroups);
+    return namesystem.initReplicaGroups(src, fileId, clientName,
+        excludedNodesSet, replicaNamespce, replicaGroups);
+  }
+
   @Override
   public LocatedBlock addBlock(String src, String clientName,
       ExtendedBlock previous, DatanodeInfo[] excludedNodes, long fileId,

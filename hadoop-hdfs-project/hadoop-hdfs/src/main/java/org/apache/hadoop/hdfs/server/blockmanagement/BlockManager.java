@@ -1446,6 +1446,17 @@ public class BlockManager {
   }
 
   /**
+   * Shen Li: 
+   */
+  public int initReplicaGroups(final String src, 
+      final Set<Node> excludedNodes, final long blockSize, 
+      final String replicaNamespace, List<String> replicaGroups)
+  throws IOException {
+    return ReplicaGroupManager.initReplicaGroups(src, excludedNodes, 
+        blockSize, StorageType.DEFAULT, replicaNamespace, replicaGroups); 
+  }
+
+  /**
    * Shen Li: add parameter for replica group
    */
   public DatanodeStorageInfo[] chooseTarget(final String src,

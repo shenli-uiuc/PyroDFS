@@ -33,9 +33,9 @@ public class ReplicaGroupManager {
   /**
    * Assign each group a DNSI 
    */
-  public static boolean initNamespace(String namespace, 
+  public static int initReplicaGroups(String namespace, 
                                       String [] groups) {
-    return true;
+    return 0;
   }
 
   public static DatanodeStorageInfo get(String namespace, 
