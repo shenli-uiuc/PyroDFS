@@ -591,7 +591,7 @@ class NameNodeRpcServer implements NamenodeProtocols {
    *
    * return the number of assigned exclusive replica groups
    */
-  @override
+  @Override
   public int initReplicaGroups(String src, String clientName,
       DatanodeInfo[] excludedNodes, long fileId,
       String replicaNamespace, String[] replicaGroups) throws IOException {
@@ -606,7 +606,7 @@ class NameNodeRpcServer implements NamenodeProtocols {
     List<String> replicaGroupsList = (replicaGroups == null) ? null
         : Arrays.asList(replicaGroups);
     return namesystem.initReplicaGroups(src, fileId, clientName,
-        excludedNodesSet, replicaNamespce, replicaGroups);
+        excludedNodesSet, replicaNamespace, replicaGroupsList);
   }
 
   @Override

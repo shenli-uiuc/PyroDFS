@@ -3,9 +3,11 @@ package org.apache.hadoop.hdfs.server.blockmanagement;
 import java.util.TreeMap;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.List;
 
 import org.apache.hadoop.net.Node;
 import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.hdfs.StorageType;
 /** 
  * TODO: has to make this persistent, make it a file in the HDFS
  * every new replicaGroup --> DatanodeStorageInfo mapping will
@@ -33,8 +35,9 @@ public class ReplicaGroupManager {
   /**
    * Assign each group a DNSI 
    */
-  public static int initReplicaGroups(String namespace, 
-                                      String [] groups) {
+  public static int initReplicaGroups(String src,
+      Set<Node> excludeNodes, long blockSize, StorageType storageType, 
+      String replicaNamespace, List<String> replicaGroups) {
     return 0;
   }
 

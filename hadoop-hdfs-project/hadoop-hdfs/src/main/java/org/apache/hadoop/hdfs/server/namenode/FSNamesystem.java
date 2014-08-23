@@ -2669,20 +2669,20 @@ public class FSNamesystem implements Namesystem, FSClusterStats,
    * Shen Li:
    */
   public int initReplicaGroups(String src, long fileId, String clientName,
-      excludedNodesSet, replicaNamespace, replicaGroups) throws IOException {
-  
+      Set<Node> excludedNodesSet, String replicaNamespace, 
+      List<String> replicaGroups) throws IOException {
+    long blockSize = 0;
     checkOperation(OperationCategory.READ);
     byte[][] pathComponents = FSDirectory.getPathComponentsForReservedPath(src);
     readLock();
     try {
       checkOperation(OperationCategory.READ);
       src = FSDirectory.resolvePath(src, pathComponents, dir);
-      LocatedBlock[] onRetryBlock = new LocatedBlock[1];
-      final INode[] inodes = analyzeFileState(
-          src, fileId, clientName, previous, onRetryBlock).getINodes();
+      final INodesInPath iip = dir.getINodesInPath4Write(src);
+      final INode[] inodes = iip.getINodes();
       final INodeFile pendingFile = inodes[inodes.length - 1].asFile();
 
-      long blockSize = pendingFile.getPreferredBlockSize();
+      blockSize = pendingFile.getPreferredBlockSize();
     } finally {
       readUnlock();
     }

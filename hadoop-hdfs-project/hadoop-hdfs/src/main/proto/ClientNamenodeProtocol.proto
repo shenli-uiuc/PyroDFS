@@ -707,6 +707,9 @@ service ClientNamenodeProtocol {
   // Shen Li
   rpc getReplicaGroupLocation(GetReplicaGroupLocationRequestProto)
                       returns(GetReplicaGroupLocationResponseProto);
+  // Shen Li
+  rpc initReplicaGroups(InitReplicaGroupsRequestProto)
+                      returns(InitReplicaGroupsResponseProto);
   rpc mkdirs(MkdirsRequestProto) returns(MkdirsResponseProto);
   rpc getListing(GetListingRequestProto) returns(GetListingResponseProto);
   rpc renewLease(RenewLeaseRequestProto) returns(RenewLeaseResponseProto);

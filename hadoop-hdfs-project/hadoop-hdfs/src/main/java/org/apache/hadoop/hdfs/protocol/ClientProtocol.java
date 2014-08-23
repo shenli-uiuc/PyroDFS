@@ -367,6 +367,14 @@ public interface ClientProtocol {
   public String getReplicaGroupLocation(String rgNamespace, String rgId) 
   throws IOException;
 
+  /**
+   * Shen Li:
+   */
+  @Idempotent
+  public int initReplicaGroups(String src, String clientName,
+      DatanodeInfo[] excludedNodes, long fileId,
+      String replicaNamespace, String[] replicaGroups) throws IOException;
+
   /** 
    * Get a datanode for an existing pipeline.
    * 

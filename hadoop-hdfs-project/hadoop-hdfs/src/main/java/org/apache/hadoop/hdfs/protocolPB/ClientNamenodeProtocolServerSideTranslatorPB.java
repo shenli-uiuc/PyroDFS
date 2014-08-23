@@ -607,9 +607,22 @@ public class ClientNamenodeProtocolServerSideTranslatorPB implements
                     InitReplicaGroupsRequestProto req)
       throws ServiceException {
     try {
-      int allocated =
-        server.initReplicaGroups();
-      //TODO
+      List<DatanodeInfoProto> excl = req.getExcludeNodesList();
+      String namespace = req.getReplicaNamespace();
+      List<String> groups = req.getReplicaGroupsList();
+      int allocated = server.initReplicaGroups(
+          req.getSrc(),
+          req.getClientName(),
+          (excl == null || excl.size() == 0) ? null : PBHelper.convert(excl
+            .toArray(new DatanodeInfoProto[excl.size()])), 
+          req.getFileId(),
+          namespace,
+          (groups== null || groups.size()== 0) ? null : groups
+          .toArray(new String[groups.size()]));
+      return InitReplicaGroupsResponseProto.newBuilder()
+        .setAllocatedNum(allocated).build();
+    } catch (IOException e) {
+      throw new ServiceException(e);
     }
   }
 

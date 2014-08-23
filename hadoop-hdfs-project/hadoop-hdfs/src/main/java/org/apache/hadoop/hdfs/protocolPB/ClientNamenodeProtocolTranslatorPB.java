@@ -144,6 +144,7 @@ import org.apache.hadoop.hdfs.protocol.proto.ClientNamenodeProtocolProtos.Update
 //Shen Li
 import org.apache.hadoop.hdfs.protocol.proto.ClientNamenodeProtocolProtos.SplitFileReuseBlocksRequestProto;
 import org.apache.hadoop.hdfs.protocol.proto.ClientNamenodeProtocolProtos.GetReplicaGroupLocationRequestProto;
+import org.apache.hadoop.hdfs.protocol.proto.ClientNamenodeProtocolProtos.InitReplicaGroupsRequestProto;
 
 import org.apache.hadoop.hdfs.security.token.block.DataEncryptionKey;
 import org.apache.hadoop.hdfs.security.token.delegation.DelegationTokenIdentifier;
@@ -396,6 +397,35 @@ public class ClientNamenodeProtocolTranslatorPB implements
       .build();
     try {
       return rpcProxy.getReplicaGroupLocation(null, req).getLocation();
+    } catch (ServiceException e) {
+      throw ProtobufHelper.getRemoteException(e);
+    }
+  }
+
+  /**
+   * Shen Li:
+   */
+  @Override
+  public int initReplicaGroups(String src, String clientName,
+      DatanodeInfo[] excludeNodes, long fileId, 
+      String replicaNamespace, String [] replicaGroups)
+  throws AccessControlException, FileNotFoundException,
+         NotReplicatedYetException, SafeModeException,
+         UnresolvedLinkException, IOException {
+    
+    try {
+      InitReplicaGroupsRequestProto.Builder req = 
+          InitReplicaGroupsRequestProto.newBuilder()
+          .setSrc(src).setClientName(clientName).setFileId(fileId);
+      if (excludeNodes != null) 
+        req.addAllExcludeNodes(PBHelper.convert(excludeNodes));
+      if (replicaGroups != null) {
+        req.addAllReplicaGroups(Arrays.asList(replicaGroups));
+      }
+      if (null != replicaNamespace)
+        req.setReplicaNamespace(replicaNamespace);
+        return rpcProxy.initReplicaGroups(null, req.build())
+                 .getAllocatedNum();
     } catch (ServiceException e) {
       throw ProtobufHelper.getRemoteException(e);
     }
