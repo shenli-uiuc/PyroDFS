@@ -2672,6 +2672,7 @@ public class FSNamesystem implements Namesystem, FSClusterStats,
       Set<Node> excludedNodesSet, String replicaNamespace, 
       List<String> replicaGroups) throws IOException {
     long blockSize = 0;
+    DatanodeDescriptor clientNode = null;
     checkOperation(OperationCategory.READ);
     byte[][] pathComponents = FSDirectory.getPathComponentsForReservedPath(src);
     readLock();
@@ -2683,12 +2684,13 @@ public class FSNamesystem implements Namesystem, FSClusterStats,
       final INodeFile pendingFile = inodes[inodes.length - 1].asFile();
 
       blockSize = pendingFile.getPreferredBlockSize();
+      clientNode = pendingFile.getFileUnderConstructionFeature().getClientNode();
     } finally {
       readUnlock();
     }
 
     // choose targets for the new block to be allocated.
-    return getBlockManager().initReplicaGroups(src, excludedNodesSet, 
+    return getBlockManager().initReplicaGroups(src, clientNode, excludedNodesSet, 
               blockSize, replicaNamespace, replicaGroups);
       
   }

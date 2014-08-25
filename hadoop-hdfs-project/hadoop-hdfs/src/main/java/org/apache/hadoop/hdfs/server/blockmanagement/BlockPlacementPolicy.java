@@ -263,4 +263,10 @@ public abstract class BlockPlacementPolicy {
     }
   }
 
+  public int initReplicaGroups(String src, Node clientNode,
+          Set<Node> excludeNodes, long blockSize, StorageType storageType,
+        String replicaNamespace, List<String> replicaGroups) {
+    throw new IllegalStateException("Shen Li: initReplicaGroups can only be" +
+        "called in BlockPlacementPolicyWithReplicaGroups");
+  }
 }

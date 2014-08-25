@@ -588,9 +588,18 @@ public abstract class FileSystem extends Configured implements Closeable {
     // 2. create file for destA and destB
     // 3. pass it to
     // this is implemented in HdfsFileSystem
-    throw new IOException("abstract class FileSystem does not"
+    throw new IOException("Shen Li: abstract class FileSystem does not"
         + "support split() method. Call it on an DistributedFileSystem"
         + "Instance");
+  }
+
+  /** 
+   * Shen Li
+   */
+  public int initReplicaGroups(String src, String replicaNamespace,
+               String [] replicaGroups) throws IOException {
+    throw new IOException("Shen Li: abstract class FileSystem does not"
+        + "support initReplicaGroups() method.");
   }
 
   /** create a directory with the provided permission

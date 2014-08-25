@@ -1737,6 +1737,15 @@ public class DFSClient implements java.io.Closeable, RemotePeerFactory {
   }
 
   /**
+   * Shen Li
+   */
+  public int initReplicaGroups(String src, String replicaNamespace,
+                               String [] replicaGroups) throws IOException {
+    return namenode.initReplicaGroups(src, clientName, null, 0, 
+            replicaNamespace, replicaGroups);
+  }
+
+  /**
    * Get a partial listing of the indicated directory
    * No block locations need to be fetched
    */

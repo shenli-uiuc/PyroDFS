@@ -287,4 +287,41 @@ extends BlockPlacementPolicyDefault {
     return rgManager.getReplicaGroupLocation(namespace, rgId);
   }
 
+  @Override
+  public int initReplicaGroups(String src, Node clientNode,
+              Set<Node> excludeNodes, long blockSize, StorageType storageType,
+              String replicaNamespace, List<String> replicaGroups) {
+    // TODO: pass numOfReplicas here
+    if (rgManager.getExcludeNodes(replicaNamespace) == null) {
+      final List<DatanodeStorageInfo> results =
+              new ArrayList<DatanodeStorageInfo>();
+      int [] ret = getMaxNodesPerRack(replicaGroups.size(), 3);
+      int maxNodesPerRack = ret[1];
+      DatanodeStorageInfo dnsi = null;
+      boolean avoidStaleNodes = (stats != null
+                 && stats.isAvoidingStaleDataNodesForWrite());
+      int successCnt = 0;
+      for (String replicaGroup : replicaGroups) {
+        try {
+          if (rgManager.checkGroupType(replicaGroup) == rgManager.PRIMARY_GROUP) {
+            dnsi = chooseLocalStorage(clientNode, excludeNodes, blockSize,
+                maxNodesPerRack, results, avoidStaleNodes,
+                storageType);
+          } else {
+            dnsi = chooseRandom(NodeBase.ROOT, excludeNodes, blockSize,
+                maxNodesPerRack, results, avoidStaleNodes,
+                storageType);
+          }
+          rgManager.addDnsiIfNecessary(replicaNamespace, replicaGroup, dnsi);
+          ++successCnt;
+        } catch (Exception ex) {
+          LOG.info("Shen Li: init replica group exception: "
+              + replicaNamespace + ", " + replicaGroup + ", " + successCnt);
+        }
+      }
+      return successCnt;
+    }
+    return 0;
+  }
 }
+

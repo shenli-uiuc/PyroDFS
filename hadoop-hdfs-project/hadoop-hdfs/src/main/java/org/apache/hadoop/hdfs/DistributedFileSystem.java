@@ -1953,4 +1953,13 @@ public class DistributedFileSystem extends FileSystem {
                                      getPathName(destB),
                                      splitPoint);
   }
+
+  @Override
+  public int initReplicaGroups(String src, 
+      String replicaNamespace, String [] replicaGroups) throws IOException {
+    LOG.info("Shen Li: DistributedFileSystem.initReplicaGroups, clientName = "
+        + dfs.clientName);
+    return dfs.initReplicaGroups(src,
+        replicaNamespace, replicaGroups);
+  }
 }

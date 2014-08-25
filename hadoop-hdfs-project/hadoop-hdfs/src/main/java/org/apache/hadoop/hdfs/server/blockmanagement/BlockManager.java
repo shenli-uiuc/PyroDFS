@@ -1448,11 +1448,12 @@ public class BlockManager {
   /**
    * Shen Li: 
    */
-  public int initReplicaGroups(final String src, 
+  public int initReplicaGroups(final String src, final Node clientNode, 
       final Set<Node> excludedNodes, final long blockSize, 
       final String replicaNamespace, List<String> replicaGroups)
   throws IOException {
-    return ReplicaGroupManager.initReplicaGroups(src, excludedNodes, 
+    return blockplacement.initReplicaGroups(src, clientNode, 
+        excludedNodes, 
         blockSize, StorageType.DEFAULT, replicaNamespace, replicaGroups); 
   }
 

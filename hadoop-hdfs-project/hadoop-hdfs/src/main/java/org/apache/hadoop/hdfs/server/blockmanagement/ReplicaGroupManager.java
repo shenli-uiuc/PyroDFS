@@ -32,15 +32,6 @@ public class ReplicaGroupManager {
     //TODO: load data from disk if necessary
   }
 
-  /**
-   * Assign each group a DNSI 
-   */
-  public static int initReplicaGroups(String src,
-      Set<Node> excludeNodes, long blockSize, StorageType storageType, 
-      String replicaNamespace, List<String> replicaGroups) {
-    return 0;
-  }
-
   public static DatanodeStorageInfo get(String namespace, 
                                         String groupStr) {
     synchronized (rGroup2Dns) {
@@ -77,11 +68,11 @@ public class ReplicaGroupManager {
       Set<Node> res = excludeNodes.get(namespace);
       if (null != res) {
         ret.addAll(res);
+        return ret;
       } else {
         return null;
       }
     }
-    return ret;
   }
 
   public static 
