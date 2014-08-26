@@ -292,7 +292,8 @@ extends BlockPlacementPolicyDefault {
               Set<Node> excludeNodes, long blockSize, StorageType storageType,
               String replicaNamespace, List<String> replicaGroups) {
     // TODO: pass numOfReplicas here
-    if (rgManager.getExcludeNodes(replicaNamespace) == null) {
+    if (rgManager.getExcludeNodes(replicaNamespace) == null
+        && null != replicaGroups && replicaGroups.size() > 0) {
       final List<DatanodeStorageInfo> results =
               new ArrayList<DatanodeStorageInfo>();
       int [] ret = getMaxNodesPerRack(replicaGroups.size(), 3);
@@ -301,6 +302,12 @@ extends BlockPlacementPolicyDefault {
       boolean avoidStaleNodes = (stats != null
                  && stats.isAvoidingStaleDataNodesForWrite());
       int successCnt = 0;
+      LOG.info("Shen Li: before init all groups: maxNodesPerRack = " 
+          + maxNodesPerRack + ", blockSide = " + blockSize
+          + ", avoidStaleNodes = " + avoidStaleNodes);
+      if (null == excludeNodes) {
+        excludeNodes = new TreeSet<Node>();
+      }
       for (String replicaGroup : replicaGroups) {
         try {
           if (rgManager.checkGroupType(replicaGroup) == rgManager.PRIMARY_GROUP) {
@@ -316,7 +323,8 @@ extends BlockPlacementPolicyDefault {
           ++successCnt;
         } catch (Exception ex) {
           LOG.info("Shen Li: init replica group exception: "
-              + replicaNamespace + ", " + replicaGroup + ", " + successCnt);
+              + replicaNamespace + ", " + replicaGroup + ", " + successCnt
+              + "\n Exception is " + ex.getMessage());
         }
       }
       return successCnt;

@@ -1452,6 +1452,11 @@ public class BlockManager {
       final Set<Node> excludedNodes, final long blockSize, 
       final String replicaNamespace, List<String> replicaGroups)
   throws IOException {
+    String strGroups = "";
+    for (String group : replicaGroups) {
+      strGroups = strGroups + group + ", ";
+    }
+    LOG.info("Shen Li: replicaGroups are " + strGroups);
     return blockplacement.initReplicaGroups(src, clientNode, 
         excludedNodes, 
         blockSize, StorageType.DEFAULT, replicaNamespace, replicaGroups); 

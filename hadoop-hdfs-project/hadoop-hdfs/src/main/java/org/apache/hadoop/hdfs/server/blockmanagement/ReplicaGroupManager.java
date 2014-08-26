@@ -122,10 +122,15 @@ public class ReplicaGroupManager {
         }
       }
       if (null != dnsi) {
+        BlockPlacementPolicy.LOG.info("Shen Li: in " 
+            + "ReplicaGroupManager.getReplicaGroupLocation() "
+            + "returning " + dnsi + ", " 
+            + dnsi.getDatanodeDescriptor().getHostName());
         return dnsi.getDatanodeDescriptor().getHostName();
       }
     }
-    BlockPlacementPolicy.LOG.info("Shen Li: ReplicaGroupManager get return null");
+    BlockPlacementPolicy.LOG.info("Shen Li: ReplicaGroupManager get return null"
+        + ", namespace = " + namespace + ", grou = " + groupStr);
     return null;
   }
 
